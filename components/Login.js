@@ -23,7 +23,7 @@ const Login = props => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={require('../static/logo-h-nb.png')} style={styles.img} />
+        <Image source={require('../static/logo-h-nb2.png')} style={styles.img} />
       </View>
       <View style={styles.inputGroup}>
         <Text style={styles.txtInput}>Ingrese su usuario:</Text>
@@ -63,20 +63,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.89)',
     borderRadius: 10,
     width: '80%',
-    height: '80%',
+    height: '70%',
     alignItems:"center"
   },
   imageContainer: {
     width: '100%',
-    height: '15%',
+    height: '20%',
     //backgroundColor: '#000',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom:40
   },
   img: {
-    height: 60,
-    width: 200,
+    height: 70,
+    width: 225,
   },
   input: {
     borderWidth: 1,

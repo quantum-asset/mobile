@@ -7,7 +7,7 @@ const Header = props => {
     <View style={styles.header}>
       <View style={styles.logoTitle}>
         <Text style={styles.text}>{title}</Text>
-        <Image source={require('../static/logo-h-nb.png')} style={styles.img} />
+        <Image source={require('../static/logo-h-nb2.png')} style={styles.img} />
       </View>
     </View>
   );

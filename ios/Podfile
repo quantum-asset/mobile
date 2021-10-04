@@ -12,7 +12,7 @@ target 'QuantumAsset' do
     :hermes_enabled => false
   )
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
   target 'QuantumAssetTests' do
     inherit! :complete
