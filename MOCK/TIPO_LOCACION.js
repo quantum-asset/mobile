@@ -1,0 +1,6 @@
+export const TIPO_LOCACION_MOCK = (ID_TIPO_LOCACION, DESCRIPCION) => {
+  return {
+    ID_TIPO_LOCACION,
+    DESCRIPCION,
+  };
+};

@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import Header from './components/Header';
+
 import Login from './components/Login';
 
 const App = props => {

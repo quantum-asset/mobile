@@ -9,30 +9,55 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
+import {AuthController} from '../controller/AuthController';
 const Login = props => {
-  const [usuario, setUsuario] = useState('');
+  const [usuario, setUsuario] = useState('griskyh@gmail.com');
   const [password, setPassword] = useState('');
-  const IniciarSesion = () => {
+  const IniciarSesion = async () => {
     if (usuario === '' || password === '') {
       Alert.alert(
         'Datos incompletos :(',
         'No se ingreso el usuario o contraseña',
       );
+    } else {
+      const {success,message,data} = await AuthController.login(usuario, password);
+      console.log('success: ', success);
+      console.log('message: ', message);
+      console.log('data: ', data);
+      if(response.success){
+        Alert.alert(
+          'ADN cargado! Mega carga!!!',
+        );
+      }else{
+        Alert.alert(
+          'NANIII',
+        );
+      }
     }
+
+  };
+  const handleChangeUser = txt => {
+    setUsuario(txt);
+    console.log('usser', txt);
+  };
+  const handleChangePassword = txt => {
+    setPassword(txt);
+    console.log('psswrd', txt);
   };
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={require('../static/logo-h-nb2.png')} style={styles.img} />
+        <Image
+          source={require('../static/logo-h-nb2.png')}
+          style={styles.img}
+        />
       </View>
       <View style={styles.inputGroup}>
         <Text style={styles.txtInput}>Ingrese su usuario:</Text>
         <TextInput
           style={styles.input}
           placeholder="Usuario"
-          onChangeText={txt => {
-            setUsuario(txt);
-          }}
+          onChangeText={handleChangeUser}
           value={usuario}
         />
       </View>
@@ -42,9 +67,7 @@ const Login = props => {
           style={styles.input}
           placeholder="Contraseña"
           secureTextEntry={true}
-          onChangeText={txt => {
-            setPassword(txt);
-          }}
+          onChangeText={handleChangePassword}
           value={password}
         />
       </View>
@@ -64,7 +87,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: '80%',
     height: '70%',
-    alignItems:"center"
+    alignItems: 'center',
   },
   imageContainer: {
     width: '100%',
@@ -72,7 +95,7 @@ const styles = StyleSheet.create({
     //backgroundColor: '#000',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:40
+    marginBottom: 40,
   },
   img: {
     height: 70,
@@ -86,10 +109,9 @@ const styles = StyleSheet.create({
     padding: 8,
     fontSize: 18,
     width: '100%',
-
   },
   btn: {
-      marginTop:60,
+    marginTop: 60,
     backgroundColor: '#86180e',
     alignItems: 'center',
     justifyContent: 'center',
@@ -106,7 +128,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     color: '#000',
     fontSize: 20,
-    marginBottom:'2%'
+    marginBottom: '2%',
   },
   inputGroup: {
     marginBottom: '5%',
