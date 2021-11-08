@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
-  Image,
+  ScrollView,
   TouchableOpacity,
+  FlatList,
   Alert,
 } from 'react-native';
 import Body from '../components/Body/Body';
@@ -15,19 +16,41 @@ import Header from '../components/Header/Header';
 import MainContainer from '../components/MainContainer/MainContainer';
 import Title from '../components/Title/Title';
 import Icon from 'react-native-vector-icons/dist/Ionicons';
+import {TomaInventarioController} from '../controller/TomaInventarioController';
+import CardTomaInventario from '../components/TomaInventario/CardTomaInventario';
+import {Dimensions} from 'react-native';
+const screenHeight = Dimensions.get('window').height;
 
 const TomasLocacionesView = props => {
   const {handleChangeView, currentProps} = props;
   const {ADN} = currentProps;
+  const [listOfTomaInv, setListOfTomaInv] = useState([]);
+  const init = async () => {
+    const {success, data, message} = await TomaInventarioController.list(7);
+    console.log('data length', data.length);
+    console.log('success', success);
+    if (success) {
+      setListOfTomaInv([...data, ...data, ...data, ...data]);
+    } else {
+      Alert.alert(
+        'Error al recuperar la información de tomas de inventario',
+        message,
+      );
+    }
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
   return (
     <MainContainer>
       <Header title={'Tomas de inventario'} />
       <Body style={styles.body}>
-        <Title title={'Por favor, elija una locacion:'} />
+        <Title title={'Por favor, elija una toma de inventario:'} />
         <View style={styles.inputGroup}>
           <TextInput
             style={styles.input}
-            placeholder="Buscar locacion"
+            placeholder="Buscar por locación"
             // onChangeText={handleChangeUser}
             //value={usuario}
           />
@@ -35,8 +58,17 @@ const TomasLocacionesView = props => {
             <Icon name="search" size={30} color="white" />
           </View>
         </View>
+
+        <ScrollView style={styles.scrollView}>
+          <FlatList
+            data={listOfTomaInv}
+            renderItem={({POR_PROCESAR}) => (
+              <CardTomaInventario ESTADO={POR_PROCESAR} />
+            )}
+          />
+        </ScrollView>
       </Body>
-      <View></View>
+
       <Footer />
     </MainContainer>
   );
@@ -44,6 +76,17 @@ const TomasLocacionesView = props => {
 export default TomasLocacionesView;
 
 const styles = StyleSheet.create({
+  scrollView: {
+    //backgroundColor: 'pink',
+    marginHorizontal: 20,
+    height: screenHeight - 280,
+  },
+  text: {
+    fontSize: 42,
+  },
+  list: {
+    height: '100%',
+  },
   body: {
     padding: 7,
   },
@@ -51,7 +94,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent:"center",
+    justifyContent: 'center',
   },
 
   input: {
@@ -64,7 +107,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   iconContainer: {
-      alignItems:"center",
+    alignItems: 'center',
     padding: '1%',
     height: '100%',
     with: '20%',
