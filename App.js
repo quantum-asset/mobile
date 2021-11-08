@@ -1,54 +1,46 @@
-import React, {useEffect} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, TextInput, StyleSheet, Image} from 'react-native';
 
-import Login from './components/Login';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+import HomeViewLogin from './Views/HomeViewLogin';
+import TomasLocacionesView from './Views/TomasLocacionesView';
+import NavigatorSSJ from './NavigationSSJ/NavigatorSSJ';
+
+const Stack = createNativeStackNavigator();
 
 const App = props => {
+  const [currentView, setCurrentView] = useState(1);
+  const [currentProps, setCurrentProps] = useState({});
+  const handleChangeView = (viewNumber, viewProps) => {
+    setCurrentProps(viewProps);
+    setCurrentView(viewNumber);
+  };
   useEffect(() => {
     console.log('Rendered App.js');
   }, []);
+  //////
+  const [usuario, setUsuario] = useState('');
+  const [auth, setAuth] = useState(false);
+  const handleLogInOut = value => {
+    setAuth(value);
+  };
+  const hanleChangeUsuario = usuario => {
+    setUsuario(usuario);
+  };
   return (
     <View>
-      {/* <Header title="Bienvenido" /> */}
-      <View style={styles.body}>
-        <Image
-          style={styles.imgBack}
-          source={{
-            uri: 'https://user-images.githubusercontent.com/43678736/135766091-1585f7a5-d5f0-4701-8acb-d179b166e0af.jpg',
-          }}
-          resizeMode="cover"
-          blurRadius={4}
-        />
-        <Login />
-      </View>
+      <NavigatorSSJ
+        index={currentView}
+        currentProps={currentProps}
+        handleChangeView={handleChangeView}
+        handleLogInOut={handleLogInOut}
+        auth={auth}
+        usuario={usuario}
+        hanleChangeUsuario={hanleChangeUsuario}
+      />
     </View>
   );
 };
 export default App;
-
-const styles = StyleSheet.create({
-  img: {
-    width: 100,
-    height: 100,
-    borderRadius: 100 / 2,
-  },
-  text: {
-    color: 'darkslateblue',
-    fontSize: 30,
-  },
-  body: {
-    //backgroundColor:"yellow",
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    position: 'relative',
-  },
-
-  imgBack: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    height: '100%',
-    width: '100%',
-  },
-});

@@ -29,7 +29,7 @@ build/
 local.properties
 *.iml
 *.hprof
-/android/app/my-upload-key.keystore
+
 # node.js
 #
 node_modules/
