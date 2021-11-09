@@ -42,17 +42,13 @@ const CardTomaInventario = props => {
         <Text>{`${CANT_ACTIVOS} Activos Fijos`}</Text>
       </View>
       <View style={styles.action}>
-          <View >
-
-          </View>
+        
         <TouchableOpacity
           style={styles.btn}
           //onPress={IniciarSesion}
-        ><TagIcon />
-          <Text style={styles.textbtn}>
-            
-            Iniciar Toma de Inventarios
-          </Text>
+        >
+          <TagIcon />
+          <Text style={styles.textbtn}>Iniciar Toma de Inventarios</Text>
         </TouchableOpacity>
       </View>
       {/*  <TouchableOpacity style={styles.btn} onPress={IniciarSesion}>
@@ -69,7 +65,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,1)',
     borderRadius: 6,
     margin: 5,
-    padding: 2,
+    padding: 6,
     alignItems: 'flex-start',
     with: '100%',
     shadowColor: '#000',
@@ -93,8 +89,8 @@ const styles = StyleSheet.create({
   },
   action: {
     flexDirection: 'row',
-    // width: '100%',
-    backgroundColor: '#86180e',
+    width: '100%',
+    //backgroundColor: '#86180e',
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
@@ -107,10 +103,12 @@ const styles = StyleSheet.create({
     height: 35,
     flexDirection: 'row',
     //width: '80%',
+    padding: 4,
     borderRadius: 4,
   },
   textbtn: {
     color: 'white',
     fontSize: 12,
+    padding: 4,
   },
 });

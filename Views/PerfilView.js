@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  Image,
   Alert,
 } from 'react-native';
 import Body from '../components/Body/Body';
@@ -22,11 +23,12 @@ import {Dimensions} from 'react-native';
 const screenHeight = Dimensions.get('window').height;
 
 const PerfilView = props => {
-  const {usuario,handleChangeView} = props;
+  const {usuario, handleChangeView} = props;
   const {
     NOMBRES,
     PRIMER_APELLIDO,
-    SEGUNDO_APELLIDO,CORREO,
+    SEGUNDO_APELLIDO,
+    CORREO,
     rol,
     ID_ARCHIVO,
     TIPO_DOCUMENTO_IDENTIDAD,
@@ -40,30 +42,38 @@ const PerfilView = props => {
   useEffect(() => {
     init(ID_ARCHIVO);
   }, [ID_ARCHIVO]);
-////LOGOUTR
-const handleLogout=()=>{
+  ////LOGOUTR
+  const handleLogout = () => {
     handleChangeView?.(0);
-}
+  };
   return (
     <MainContainer>
       <Header title={'Perfil de usuario'} />
       <Body style={styles.body}>
-      <ScrollView style={styles.scrollView}>
+        {/* <ScrollView style={styles.scrollView}></ScrollView> */}
+        <View style={styles.perfilContainer}>
+          <Image
+            source={{
+              uri: 'https://www.pngall.com/wp-content/uploads/5/Profile-PNG-Images.png',
+            }}
+            style={styles.img}
+          />
 
-        <View>
-            <Text>{NOMBRES || "-"}</Text>
-            <Text>{PRIMER_APELLIDO || "-"}</Text>
-            <Text>{SEGUNDO_APELLIDO || "-"}</Text>
-            <Text>{CORREO || "-"}</Text>
-            <Text>{rol?.[0]?.DENOMINACION || "-"}</Text>
-            <Text>{TIPO_DOCUMENTO_IDENTIDAD || "-"}</Text>
-            <Text>{NUM_DOCUMENTO_IDENTIDAD || "-"}</Text>
+          <Text>{NOMBRES || '-'}</Text>
+          <Text>{PRIMER_APELLIDO || '-'}</Text>
+          <Text>{SEGUNDO_APELLIDO || '-'}</Text>
+          <Text>{CORREO || '-'}</Text>
+          <Text>{rol?.[0]?.DENOMINACION || '-'}</Text>
+          <Text>{TIPO_DOCUMENTO_IDENTIDAD || '-'}</Text>
+          <Text>{NUM_DOCUMENTO_IDENTIDAD || '-'}</Text>
         </View>
-
-      </ScrollView>
       </Body>
 
-      <Footer  handleChangeView={handleChangeView} active={1} handleLogout={handleLogout}/>
+      <Footer
+        handleChangeView={handleChangeView}
+        active={1}
+        handleLogout={handleLogout}
+      />
     </MainContainer>
   );
 };
@@ -75,7 +85,24 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     height: screenHeight - 280,
   },
+  perfilContainer: {
+      margin:20,
+    shadowColor: '#000',
+    backgroundColor: 'rgba(255,255,255,1)',
 
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
+  img: {
+    height: 120,
+    width: 120,
+  },
   text: {
     fontSize: 42,
   },
