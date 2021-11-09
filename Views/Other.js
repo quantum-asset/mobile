@@ -11,24 +11,24 @@ import {
 
 import * as ImagePicker from 'react-native-image-picker';
 //import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+
 export default class Other extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      resourcePath: {},
+      resourcePath: null,
     };
   }
-
-  selectFile = () => {
+  selectFileCamera = () => {
     var options = {
-      title: 'Select Image',
-
+      title: 'Take photo',
+      includeBase64:true,
       customButtons: [
         {
           name: 'customOptionKey',
 
-          title: 'Choose file from Custom Option',
+          title: 'Choose file from Camera',
         },
       ],
 
@@ -40,9 +40,11 @@ export default class Other extends React.Component {
     };
     //console.log("result:", options);
     console.log('ImagePicker:', ImagePicker);
-    ImagePicker.launchImageLibrary(options, res => {
-      console.log('Response = ', res);
-
+    ImagePicker.launchCamera(options, res => {
+        console.log('Response.assets = ', res.assets[0]);
+        this.setState({
+          resourcePath: res.assets[0].uri,
+        });
       if (res.didCancel) {
         console.log('User cancelled image picker');
       } else if (res.error) {
@@ -54,48 +56,97 @@ export default class Other extends React.Component {
       } else {
         let source = res;
 
-        this.setState({
+      /*   this.setState({
           resourcePath: source,
-        });
+        }); */
       }
+    });
+  };
+  selectFile = () => {
+    var options = {
+      title: 'Select Image',
+      includeBase64:true,
+      customButtons: [
+        {
+          name: 'customOptionKey',
+
+          title: 'Choose file from Custom Option',
+        },
+      ],
+      storageOptions: {
+        skipBackup: true,
+
+        path: 'images',
+      },
+    };
+    //console.log("result:", options);
+    console.log('ImagePicker:', ImagePicker);
+    ImagePicker.launchImageLibrary(options, res => {
+      console.log('Response = ', Object.keys(res));
+      console.log('Response.assets = ', res.assets[0]);
+      this.setState({
+        resourcePath: res.assets[0].uri,
+      });
+      if (res.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (res.error) {
+        console.log('ImagePicker Error: ', res.error);
+      } else if (res.customButton) {
+        console.log('User tapped custom button: ', res.customButton);
+
+        alert(res.customButton);
+      } else {
+        let source = res;
+
+      /*   this.setState({
+          resourcePath: source,
+        });*/
+      } 
     });
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.container}>
-          <Image
+        
+          {this.state.resourcePath && <Image
             source={{
-              uri: 'data:image/jpeg;base64,' + this.state.resourcePath.data,
+              uri: 'data:image/jpeg;base64,' + this.state.resourcePath,
             }}
-            style={{width: 100, height: 100}}
+            style={styles.image}
           />
+}
+         {this.state.resourcePath &&  <Image
+            source={{uri: this.state.resourcePath}}
+            style={styles.image}
 
-          <Image
-            source={{uri: this.state.resourcePath.uri}}
-            style={{width: 200, height: 200}}
-          />
+          />}
 
-          <Text style={{alignItems: 'center'}}>
-            {this.state.resourcePath.uri}
-          </Text>
+          {this.state.resourcePath && <Text >
+            {this.state.resourcePath.toString()}
+          </Text>}
 
           <TouchableOpacity onPress={this.selectFile} style={styles.button}>
-            <Text style={styles.buttonText}>Select File</Text>
+            <Text >Select File</Text>
           </TouchableOpacity>
-        </View>
+          <TouchableOpacity onPress={this.selectFileCamera} style={styles.button}>
+            <Text >From Camera</Text>
+          </TouchableOpacity>
+        
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+    image:{
+        width: 100, height: 100
+    },
   container: {
-    flex: 1,
+   // flex: 1,
 
     padding: 30,
-
+//height:"100%",
     alignItems: 'center',
 
     justifyContent: 'center',
