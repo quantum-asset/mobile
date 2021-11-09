@@ -52,12 +52,14 @@ const PerfilView = props => {
       <Body style={styles.body}>
         {/* <ScrollView style={styles.scrollView}></ScrollView> */}
         <View style={styles.perfilContainer}>
-          <Image
-            source={{
-              uri: 'https://www.pngall.com/wp-content/uploads/5/Profile-PNG-Images.png',
-            }}
-            style={styles.img}
-          />
+          <View style={styles.imgContainer}>
+            <Image
+              source={{
+                uri: 'https://www.pngall.com/wp-content/uploads/5/Profile-PNG-Images.png',
+              }}
+              style={styles.img}
+            />
+          </View>
 
           <Text>{NOMBRES || '-'}</Text>
           <Text>{PRIMER_APELLIDO || '-'}</Text>
@@ -86,10 +88,11 @@ const styles = StyleSheet.create({
     height: screenHeight - 280,
   },
   perfilContainer: {
-      margin:20,
+      //width:"100%",
+    margin: 20,
+    margin: 20,
     shadowColor: '#000',
     backgroundColor: 'rgba(255,255,255,1)',
-
     shadowOffset: {
       width: 0,
       height: 2,
@@ -98,6 +101,10 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
 
     elevation: 5,
+  },
+  imgContainer:{
+    alignItems:"center",
+
   },
   img: {
     height: 120,
