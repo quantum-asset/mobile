@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
+import TagIcon from '../Icons/TagIcon';
 
 const CardTomaInventario = props => {
   const {
@@ -23,26 +24,36 @@ const CardTomaInventario = props => {
   }, []);
   return (
     <View style={styles.container}>
-     <View >
+      <View>
         <Text style={styles.fecha}>{FECHA_INICIO}</Text>
       </View>
 
-      <View >
+      <View>
         <Text style={styles.title}>{`Inventario ${
           ES_MUESTREO ? 'de muestreo' : ' programado (formal)'
         }`}</Text>
       </View>
 
-
-      
-
       <View>
         <Text>{`${CANT_LOCACIONES} Locaciones`}</Text>
       </View>
 
-
       <View>
         <Text>{`${CANT_ACTIVOS} Activos Fijos`}</Text>
+      </View>
+      <View style={styles.action}>
+          <View >
+
+          </View>
+        <TouchableOpacity
+          style={styles.btn}
+          //onPress={IniciarSesion}
+        ><TagIcon />
+          <Text style={styles.textbtn}>
+            
+            Iniciar Toma de Inventarios
+          </Text>
+        </TouchableOpacity>
       </View>
       {/*  <TouchableOpacity style={styles.btn} onPress={IniciarSesion}>
         <Text style={styles.textbtn}>Iniciar Sesion</Text>
@@ -56,42 +67,50 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     backgroundColor: 'rgba(255,255,255,1)',
-    borderRadius: 10,
+    borderRadius: 6,
     margin: 5,
     padding: 2,
     alignItems: 'flex-start',
-    with:"100%",
-    shadowColor: "#000",
-shadowOffset: {
-	width: 0,
-	height: 2,
-},
-shadowOpacity: 0.25,
-shadowRadius: 3.84,
+    with: '100%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
 
-elevation: 5,
+    elevation: 5,
   },
   title: {
     fontSize: 16,
     color: 'black',
-    with: '100%',
+    width: '100%',
     textAlign: 'left',
   },
   fecha: {
     fontSize: 20,
   },
+  action: {
+    flexDirection: 'row',
+    // width: '100%',
+    backgroundColor: '#86180e',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+  },
   btn: {
-    marginTop: 60,
+    //marginTop: 60,
     backgroundColor: '#86180e',
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    height: 55,
-    width: '80%',
+    height: 35,
+    flexDirection: 'row',
+    //width: '80%',
     borderRadius: 4,
   },
   textbtn: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 12,
   },
 });

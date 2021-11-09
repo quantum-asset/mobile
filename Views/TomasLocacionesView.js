@@ -42,34 +42,73 @@ const TomasLocacionesView = props => {
   useEffect(() => {
     init();
   }, []);
+  const [tomasInventario, setTomasInventario] = useState(true);
+  const [locacionesView,setLocacionesView] = useState(false);
+  const [activosView, setActivosView] = useState(false);
+  const [activoDetalleView, setActivoDetalleView] = useState(false);
+  
+
+
+
+  ////LOGOUTR
+const handleLogout=()=>{
+  handleChangeView?.(0);
+}
   return (
     <MainContainer>
       <Header title={'Tomas de inventario'} />
       <Body style={styles.body}>
-        <Title title={'Por favor, elija una toma de inventario:'} />
-        <View style={styles.inputGroup}>
-          <TextInput
-            style={styles.input}
-            placeholder="Buscar por locación"
-            // onChangeText={handleChangeUser}
-            //value={usuario}
-          />
-          <View style={styles.iconContainer}>
-            <Icon name="search" size={30} color="white" />
-          </View>
-        </View>
+        {tomasInventario && (
+          <View>
+            <Title title={'Por favor, elija una toma de inventario:'} />
+            <View style={styles.inputGroup}>
+              <TextInput
+                style={styles.input}
+                placeholder="Buscar por locación"
+                // onChangeText={handleChangeUser}
+                //value={usuario}
+              />
+              <View style={styles.iconContainer}>
+                <Icon name="search" size={30} color="white" />
+              </View>
+            </View>
 
-        <ScrollView style={styles.scrollView}>
-          <FlatList
-            data={listOfTomaInv}
-            renderItem={({POR_PROCESAR}) => (
-              <CardTomaInventario ESTADO={POR_PROCESAR} />
-            )}
-          />
-        </ScrollView>
+            <ScrollView style={styles.scrollView}>
+             {
+               listOfTomaInv.map(({POR_PROCESAR},index)=>(
+                <CardTomaInventario key={index} ESTADO={POR_PROCESAR} />
+               ))
+                            }
+               {/*  <FlatList
+                  data={listOfTomaInv}
+                  renderItem={({POR_PROCESAR}) => (
+                    <CardTomaInventario ESTADO={POR_PROCESAR} />
+                  )}
+                /> */}
+            </ScrollView>
+          </View>
+        )}
+        {locacionesView && <View>
+          
+          
+          
+          </View>}
+          {activosView && <View>
+          
+          
+          
+          </View>}
+          {activoDetalleView && <View>
+          
+          
+          
+          </View>}
       </Body>
 
-      <Footer />
+      <Footer active={0} handleChangeView={
+        handleChangeView
+      }
+      handleLogout={handleLogout}/>
     </MainContainer>
   );
 };
@@ -78,9 +117,10 @@ export default TomasLocacionesView;
 const styles = StyleSheet.create({
   scrollView: {
     //backgroundColor: 'pink',
-    marginHorizontal: 20,
+    marginHorizontal: 5,
     height: screenHeight - 280,
   },
+
   text: {
     fontSize: 42,
   },
@@ -104,7 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 8,
     fontSize: 18,
-    width: '80%',
+    width: '84%',
   },
   iconContainer: {
     alignItems: 'center',

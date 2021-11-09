@@ -11,7 +11,7 @@ import {
 import Login from '../components/Login/Login';
 import {AuthController} from '../controller/AuthController';
 const HomeViewLogin = props => {
-  const {handleChangeView, currentProps} = props;
+  
   
   useEffect(() => {
     console.log('rendered Login Container');

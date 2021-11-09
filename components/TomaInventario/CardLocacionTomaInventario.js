@@ -64,18 +64,11 @@ const Login = props => {
           value={usuario}
         />
       </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.txtInput}>Contraseña:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Contraseña"
-          secureTextEntry={true}
-          onChangeText={handleChangePassword}
-          value={password}
-        />
-      </View>
+      
 
-      <TouchableOpacity style={styles.btn} onPress={IniciarSesion}>
+      <TouchableOpacity style={styles.btn} 
+      //onPress={IniciarSesion}
+      >
         <Text style={styles.textbtn}>Iniciar Sesion</Text>
       </TouchableOpacity>
     </View>

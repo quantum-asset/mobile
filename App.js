@@ -11,8 +11,13 @@ import NavigatorSSJ from './NavigationSSJ/NavigatorSSJ';
 const Stack = createNativeStackNavigator();
 
 const App = props => {
-  const [currentView, setCurrentView] = useState(1);
+  const [currentView, setCurrentView] = useState(2);
   const [currentProps, setCurrentProps] = useState({});
+  /**
+   *
+   * @param {*} viewNumber numero de View
+   * @param {*} viewProps props que pueda necesitar el nuevo view como eventrinet
+   */
   const handleChangeView = (viewNumber, viewProps) => {
     setCurrentProps(viewProps);
     setCurrentView(viewNumber);

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {AuthController} from '../../controller/AuthController';
 const Login = props => {
-  const {handleChangeView, currentProps} = props;
+  const {handleChangeView, currentProps,hanleChangeUsuario} = props;
   const [usuario, setUsuario] = useState('griskyh@gmail.com');
   const [password, setPassword] = useState('');
   const IniciarSesion = async () => {
@@ -29,6 +29,7 @@ const Login = props => {
       console.log('data: ', data);
       if (success) {
         Alert.alert('ADN cargado! Mega carga!!!');
+        hanleChangeUsuario?.(data);
         handleChangeView?.(1, {ADN: 'MEGA CARGAAAA'});
         //navigation.navigate('TomaInventario', {ADN: 'cargado'});
       } else {
