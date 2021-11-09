@@ -45,6 +45,9 @@ export default class Other extends React.Component {
         this.setState({
           resourcePath: res.assets[0].uri,
         });
+        const base =res.assets[0].base64;
+        console.log("size", base.length);
+        console.log("base", base.slice(0,40));
       if (res.didCancel) {
         console.log('User cancelled image picker');
       } else if (res.error) {
@@ -87,6 +90,10 @@ export default class Other extends React.Component {
       this.setState({
         resourcePath: res.assets[0].uri,
       });
+      const base =res.assets[0].base64;
+      console.log("size", base.length);
+      console.log("base", base.slice(0,40));
+
       if (res.didCancel) {
         console.log('User cancelled image picker');
       } else if (res.error) {
