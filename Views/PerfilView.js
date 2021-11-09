@@ -20,6 +20,8 @@ import Icon from 'react-native-vector-icons/dist/Ionicons';
 import {TomaInventarioController} from '../controller/TomaInventarioController';
 import CardTomaInventario from '../components/TomaInventario/CardTomaInventario';
 import {Dimensions} from 'react-native';
+
+import ImagePicker from 'react-native-image-picker';
 const screenHeight = Dimensions.get('window').height;
 
 const PerfilView = props => {
@@ -46,6 +48,39 @@ const PerfilView = props => {
   const handleLogout = () => {
     handleChangeView?.(0);
   };
+  const [resourcePath, setResourcePath] = useState({});
+
+  const selectFile = () => {
+    var options = {
+      title: 'Select Image',
+      customButtons: [
+        {
+          name: 'customOptionKey',
+          title: 'Choose file from Custom Option',
+        },
+      ],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    ImagePicker.showImagePicker(options, res => {
+      console.log('Response = ', res);
+      if (res.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (res.error) {
+        console.log('ImagePicker Error: ', res.error);
+      } else if (res.customButton) {
+        console.log('User tapped custom button: ', res.customButton);
+
+        alert(res.customButton);
+      } else {
+        let source = res;
+        setResourcePath(source);
+      }
+    });
+  };
   return (
     <MainContainer>
       <Header title={'Perfil de usuario'} />
@@ -69,6 +104,25 @@ const PerfilView = props => {
           <Text>{TIPO_DOCUMENTO_IDENTIDAD || '-'}</Text>
           <Text>{NUM_DOCUMENTO_IDENTIDAD || '-'}</Text>
         </View>
+
+        {/**image picker */}
+        <Image
+          source={{
+            uri: 'data:image/jpeg;base64,' + resourcePath.data,
+          }}
+          style={{width: 100, height: 100}}
+        />
+
+        <Image
+          source={{uri: resourcePath.uri}}
+          style={{width: 200, height: 200}}
+        />
+
+        <Text style={{alignItems: 'center'}}>{resourcePath.uri}</Text>
+
+        <TouchableOpacity onPress={selectFile} style={styles.button}>
+          <Text style={styles.buttonText}>Select File</Text>
+        </TouchableOpacity>
       </Body>
 
       <Footer
@@ -82,13 +136,28 @@ const PerfilView = props => {
 export default PerfilView;
 
 const styles = StyleSheet.create({
+  button: {
+    width: 250,
+    height: 60,
+    backgroundColor: '#3740ff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4,
+    marginBottom: 12,
+  },
+
+  buttonText: {
+    textAlign: 'center',
+    fontSize: 15,
+    color: '#fff',
+  },
   scrollView: {
     //backgroundColor: 'pink',
     marginHorizontal: 5,
     height: screenHeight - 280,
   },
   perfilContainer: {
-      //width:"100%",
+    //width:"100%",
     margin: 20,
     margin: 20,
     shadowColor: '#000',
@@ -102,9 +171,8 @@ const styles = StyleSheet.create({
 
     elevation: 5,
   },
-  imgContainer:{
-    alignItems:"center",
-
+  imgContainer: {
+    alignItems: 'center',
   },
   img: {
     height: 120,

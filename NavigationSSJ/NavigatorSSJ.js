@@ -9,6 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import HomeViewLogin from '../Views/HomeViewLogin';
+import Other from '../Views/Other';
 import PerfilView from '../Views/PerfilView';
 import TomasLocacionesView from '../Views/TomasLocacionesView';
 
@@ -26,7 +27,7 @@ const NavigatorSSJ = props => {
     case 0:
       return <HomeViewLogin {...props} />;
     case 1:
-      return <PerfilView {...props} />;
+      return <Other {...props} />;
       case 2:
       return <TomasLocacionesView {...props} />;
     default:
