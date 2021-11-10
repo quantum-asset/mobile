@@ -8,22 +8,23 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { parseDate } from '../../globals/date';
+import {parseDate} from '../../globals/date';
 import TagIcon from '../Icons/TagIcon';
 
 const CardTomaInventario = props => {
   const {openDetalle, tomaInventario} = props;
+  //console.log('CardTomaInventario props', props);
   const {
     FECHA_INICIO = 'Nov. 23, 2022',
     CANT_LOCACIONES = 12,
     CANT_ACTIVOS = 1645,
     ACTIVOS_ENCONTRADOS = 0,
-    ESTADO = 0,
+    POR_PROCESAR,
     ES_MUESTREO = 0,
-    LOCACIONES=[]
+    LOCACIONES = [],
   } = tomaInventario;
   useEffect(() => {
-   // console.log('rendered CardToma',props);
+    // console.log('rendered CardToma',props);
   }, []);
   ///open detallea
   const handlePress = () => {

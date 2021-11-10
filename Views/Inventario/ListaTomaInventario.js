@@ -29,17 +29,14 @@ const ListaTomasInventario = props => {
 
   useEffect(() => {
     init(tomasInventario);
-    return () => {
-      setListOfTomaInvFilter([]);
+    /* return () => {
+ 
       setListOfTomaInv([]);
-    };
+    }; */
   }, [tomasInventario]);
-  ////filtrooo
-  useEffect(() => {
-    filtrarPorLocacion(filterLocacion);
-  }, [filterLocacion]);
+ 
   return (
-    <View>
+    <>
       <Header title={'Tomas de inventario'} />
       <Body style={styles.body}>
         <Title title={'Por favor, elija una toma de inventario:'} />
@@ -60,7 +57,7 @@ const ListaTomasInventario = props => {
           )}
         </ScrollView>
       </Body>
-    </View>
+    </>
   );
 };
 export default ListaTomasInventario;

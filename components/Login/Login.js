@@ -11,8 +11,8 @@ import {
 import {AuthController} from '../../controller/AuthController';
 const Login = props => {
   const {handleChangeView, currentProps, hanleChangeUsuario} = props;
-  const [usuario, setUsuario] = useState('griskyh@gmail.com');
-  const [password, setPassword] = useState('');
+  const [usuario, setUsuario] = useState('a20122128@pucp.pe');
+  const [password, setPassword] = useState('1234567');
   const IniciarSesion = async () => {
     if (usuario === '' || password === '') {
       Alert.alert(

@@ -22,7 +22,7 @@ export default Title;
 
 const styles = StyleSheet.create({
   container: {
-   
+   marginHorizontal:7
   },
   title: {
     color: 'black',

@@ -45,33 +45,22 @@ const TomasLocacionesView = props => {
     }
   };
 
-  useEffect(() => {
-    init();
-    return () => {
-      setTomasInventario(true);
-      setLocacionesView(false);
-      setActivosView(false);
-      setActivoDetalleView(false);
-      setCurrTomaInv(undefined);
-      setCurrActivo(undefined);
-    };
-  }, []);
-
-  ///filter
-
   ////// componente activo   // /   VISTAS
   //vista de tomas de inventario
   const [tomasInventarioView, setTomasInventarioView] = useState(true);
+
+  ///filter
 
   /// cuurrent toma de inventario
   const [currTomaInv, setCurrTomaInv] = useState(undefined);
   const [locacionesView, setLocacionesView] = useState(false);
   const handleCurrentTomaInv = newTomaInv => {
     if (newTomaInv) {
+      console.log('handleCurrentTomaInv =>', newTomaInv);
       setCurrTomaInv(newTomaInv);
       setLocacionesView(true);
 
-      tomasInventarioView(false);
+      setTomasInventarioView(false);
     }
   };
   //current locacion => lista de activos interna
@@ -96,6 +85,20 @@ const TomasLocacionesView = props => {
   const handleLogout = () => {
     handleChangeView?.(0);
   };
+
+
+  useEffect(() => {
+    init();
+    return () => {
+      setTomasInventario(true);
+      setLocacionesView(false);
+      setActivosView(false);
+      setActivoDetalleView(false);
+      setCurrTomaInv(undefined);
+      setCurrActivo(undefined);
+    };
+  }, []);
+
   return (
     <MainContainer>
       {tomasInventarioView && (
@@ -107,7 +110,7 @@ const TomasLocacionesView = props => {
       )}
 
       {locacionesView && currTomaInv && (
-        <ListaLocacionesTomasInventario
+         <ListaLocacionesTomasInventario
           {...props}
           goBack={() => {
             setLocacionesView(false);
@@ -117,7 +120,8 @@ const TomasLocacionesView = props => {
           handleCurrLocacion={handleCurrLocacion}
           locaciones={currTomaInv.LOCACIONES}
           currTomaInv={currTomaInv}
-        />
+        /> 
+       /*  <Text>se abrio</Text> */
       )}
 
       {activosView && currLocacion && (
@@ -135,14 +139,17 @@ const TomasLocacionesView = props => {
           />
         </View>
       )}
-      {activoDetalleView && currActivo &&(
+      {activoDetalleView && currActivo && (
         <View>
           <Text> detalle de activo </Text>
-          <DetalleActivo currActivo={currActivo} goBack={()=>{
-            setActivosView(true);
-            setActivoDetalleView(false);
-            setCurrActivo(undefined);
-          }}/>
+          <DetalleActivo
+            currActivo={currActivo}
+            goBack={() => {
+              setActivosView(true);
+              setActivoDetalleView(false);
+              setCurrActivo(undefined);
+            }}
+          />
         </View>
       )}
 

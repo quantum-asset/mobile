@@ -8,22 +8,17 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
+import {parseDate} from '../../globals/date';
 import TagIcon from '../Icons/TagIcon';
 
-const Login = props => {
+const CardLocacionTomaInventario = props => {
   const {openDetalle, locacion} = props;
-
-  const {
-    ID_LOCACION = 0,
-    POR_PROCESAR = 1,
-    OBSERVACIONES = '-',
-    ID_TOMA_INVENTARIO_X_LOCACION = 0,
-    DIRECCION = '-',
-    DENOMINACION = '-',
-    CANT_ACTIVOS = 1645,
-    ESTADO = 0,
-    ES_MUESTREO = 0,
-  } = locacion;
+  //console.log('CardTomaInventario props', props);
+  const {DENOMINACION = 'DENOMINACION DE LA LOCCION'} = locacion;
+  useEffect(() => {
+    // console.log('rendered CardToma',props);
+  }, []);
+  ///open detallea
   const handlePress = () => {
     openDetalle?.(tomaInventario);
   };
@@ -33,29 +28,19 @@ const Login = props => {
         <Text style={styles.fecha}>{DENOMINACION}</Text>
       </View>
 
-      <View>
-        <Text style={styles.title}>{`Inventario ${
-          ES_MUESTREO ? 'de muestreo' : ' programado (formal)'
-        }`}</Text>
-      </View>
-
-      <View>
-        <Text>{`${DIRECCION} Locaciones`}</Text>
-      </View>
-
-      <View>
-        <Text>{`${CANT_ACTIVOS} Activos Fijos`}</Text>
-      </View>
       <View style={styles.action}>
         <TouchableOpacity style={styles.btn} onPress={handlePress}>
           <TagIcon />
           <Text style={styles.textbtn}>Iniciar Toma de Inventarios</Text>
         </TouchableOpacity>
       </View>
+      {/*  <TouchableOpacity style={styles.btn} onPress={IniciarSesion}>
+        <Text style={styles.textbtn}>Iniciar Sesion</Text>
+      </TouchableOpacity> */}
     </View>
   );
 };
-export default Login;
+export default CardLocacionTomaInventario;
 
 const styles = StyleSheet.create({
   container: {
@@ -83,8 +68,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   fecha: {
-    color: 'black',
-
     fontSize: 20,
   },
   action: {

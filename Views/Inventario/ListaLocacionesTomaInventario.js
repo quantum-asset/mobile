@@ -17,10 +17,18 @@ import CardTomaInventario from '../../components/TomaInventario/CardTomaInventar
 import {Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {mainColor} from '../../globals/palette';
+import CardLocacionTomaInventario from '../../components/TomaInventario/CardLocacionTomaInventario';
 const screenHeight = Dimensions.get('window').height;
 
 const ListaLocacionesTomasInventario = props => {
+
   const {currTomaInv, locaciones, goBack, handleCurrLocacion} = props;
+  console.log('ListaLocacionesTomasInventario currTomaInv =>', currTomaInv);
+  console.log('ListaLocacionesTomasInventario locaciones =>', locaciones);
+
+
+
+
 
   const [listOfLocaciones, setListOfLocaciones] = useState([]);
   const [listOfLocacionesFilter, setListOfLocacionesFilter] = useState([]);
@@ -33,8 +41,8 @@ const ListaLocacionesTomasInventario = props => {
   useEffect(() => {
     init(locaciones);
     return () => {
-      setListOfTomaInvFilter([]);
-      setListOfTomaInv([]);
+      setListOfLocacionesFilter([]);
+      setListOfLocaciones([]);
     };
   }, [locaciones]);
   ////filtrooo
@@ -46,23 +54,22 @@ const ListaLocacionesTomasInventario = props => {
   const filtrarPorLocacion = filtro => {
     console.log('filtro', filtro);
     if (filtro && filtro.length > 0) {
-      const currList = listOfTomaInv;
+      const currList = listOfLocaciones;
       let data = [];
       for (let i = 0; i < currList.length; i++) {
-        // const {LOCACIONES} = currList[i];
-        console.log('lcoaciones', currList[i].TOMA_INVENTARIO.LOCACIONES);
-        const LOCACIONES = currList[i].TOMA_INVENTARIO.LOCACIONES;
+        console.log('locaion', currList[i]);
+        const LOCACION = currList[i];
         if (
-          JSON.stringify(LOCACIONES)
+          JSON.stringify(LOCACION)
             .toLocaleLowerCase()
             .includes(filtro.toLocaleLowerCase())
         ) {
           data.push(currList[i]);
         }
       }
-      setListOfTomaInvFilter(data);
+      setListOfLocacionesFilter(data);
     } else {
-      setListOfTomaInvFilter(listOfTomaInv);
+      setListOfLocacionesFilter(listOfLocaciones);
     }
   };
   useEffect(() => {
@@ -73,16 +80,18 @@ const ListaLocacionesTomasInventario = props => {
     handleCurrLocacion?.(locacion);
   };
   return (
-    <View>
-      <Title title={'Por favor, elija una locacion:'} />
-      <TouchableOpacity
+    <>
+      <Header title={'Locaciones'} />
+      <Body style={styles.body}>
+        <TouchableOpacity
         style={styles.goBack}
         onPress={() => {
           goBack?.();
         }}>
-        <Icon name="arrow-back" size={20} color={mainColor} />
-        <Text>Regresar</Text>
+        <Icon name="arrow-back" size={30} color={mainColor} />
+        <Text>Regresar a Tomas de inventario</Text>
       </TouchableOpacity>
+      <Title title={'Por favor, elija una locacion:'} />
 
       <View style={styles.inputGroup}>
         <TextInput
@@ -96,15 +105,17 @@ const ListaLocacionesTomasInventario = props => {
       </View>
 
       <ScrollView style={styles.scrollView}>
-        {locaciones.map((locacion, index) => (
-          <CardTomaInventario
+        {listOfLocacionesFilter.map((locacion, index) => (
+          <CardLocacionTomaInventario
             key={index}
             locacion={locacion}
             openDetalle={() => selectLocacion(locacion)}
           />
         ))}
       </ScrollView>
-    </View>
+      </Body>
+      
+    </>
   );
 };
 export default ListaLocacionesTomasInventario;
@@ -128,7 +139,7 @@ const styles = StyleSheet.create({
   },
   body: {
     //padding: 7,
-    backgroundColor: 'rgba(255,255,255,1)',
+    backgroundColor: 'rgba(255,255,255,0.95)',
   },
   inputGroup: {
     width: '100%',
