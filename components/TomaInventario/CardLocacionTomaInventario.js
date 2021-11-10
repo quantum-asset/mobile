@@ -21,7 +21,8 @@ const CardLocacionTomaInventario = props => {
   }, []);
   ///open detallea
   const handlePress = () => {
-    openDetalle?.(tomaInventario);
+
+    openDetalle?.();
   };
   return (
     <View style={styles.container}>
@@ -35,9 +36,7 @@ const CardLocacionTomaInventario = props => {
           <Text style={styles.textbtn}>Iniciar Toma de Inventarios</Text>
         </TouchableOpacity>
       </View>
-      {/*  <TouchableOpacity style={styles.btn} onPress={IniciarSesion}>
-        <Text style={styles.textbtn}>Iniciar Sesion</Text>
-      </TouchableOpacity> */}
+
     </View>
   );
 };

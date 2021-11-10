@@ -67,6 +67,7 @@ const TomasLocacionesView = props => {
   const [currLocacion, setCurrLocacion] = useState(undefined);
   const [activosView, setActivosView] = useState(false);
   const handleCurrLocacion = locacion => {
+    console.log('handleCurrLocacion: ', locacion);
     setCurrLocacion(locacion);
     setLocacionesView(false);
     setActivosView(true);
@@ -85,7 +86,6 @@ const TomasLocacionesView = props => {
   const handleLogout = () => {
     handleChangeView?.(0);
   };
-
 
   useEffect(() => {
     init();
@@ -110,7 +110,7 @@ const TomasLocacionesView = props => {
       )}
 
       {locacionesView && currTomaInv && (
-         <ListaLocacionesTomasInventario
+        <ListaLocacionesTomasInventario
           {...props}
           goBack={() => {
             setLocacionesView(false);
@@ -120,14 +120,15 @@ const TomasLocacionesView = props => {
           handleCurrLocacion={handleCurrLocacion}
           locaciones={currTomaInv.LOCACIONES}
           currTomaInv={currTomaInv}
-        /> 
-       /*  <Text>se abrio</Text> */
+        />
+        /*  <Text>se abrio</Text> */
       )}
 
       {activosView && currLocacion && (
-        <View>
-          <Text> vista de activos por locacione </Text>
+       
+         
           <ListaActivoXLocaciones
+            ID_LOCACION={currLocacion.ID_LOCACION}
             currTomaInv={currTomaInv}
             currLocacion={currLocacion}
             goBack={() => {
@@ -136,21 +137,19 @@ const TomasLocacionesView = props => {
               setCurrLocacion(undefined);
             }}
             handleCurrActivo={handleCurrActivo}
+            usuario={usuario}
           />
-        </View>
+        
       )}
       {activoDetalleView && currActivo && (
-        <View>
-          <Text> detalle de activo </Text>
-          <DetalleActivo
-            currActivo={currActivo}
-            goBack={() => {
-              setActivosView(true);
-              setActivoDetalleView(false);
-              setCurrActivo(undefined);
-            }}
-          />
-        </View>
+        <DetalleActivo
+          currActivo={currActivo}
+          goBack={() => {
+            setActivosView(true);
+            setActivoDetalleView(false);
+            setCurrActivo(undefined);
+          }}
+        />
       )}
 
       <Footer

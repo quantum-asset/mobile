@@ -21,7 +21,7 @@ import CardLocacionTomaInventario from '../../components/TomaInventario/CardLoca
 const screenHeight = Dimensions.get('window').height;
 
 const ListaLocacionesTomasInventario = props => {
-  const {currTomaInv, locaciones=[], goBack, handleCurrLocacion} = props;
+  const {currTomaInv, locaciones = [], goBack, handleCurrLocacion} = props;
   console.log('ListaLocacionesTomasInventario currTomaInv =>', currTomaInv);
   console.log('ListaLocacionesTomasInventario locaciones =>', locaciones);
 
@@ -70,6 +70,7 @@ const ListaLocacionesTomasInventario = props => {
   }, [filterLocacion]);
 
   const selectLocacion = locacion => {
+    //console.log('selectLocacion', locacion);
     handleCurrLocacion?.(locacion);
   };
   return (

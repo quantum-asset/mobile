@@ -20,6 +20,23 @@ export class ActivoController {
       );
     }
   };
+  static listXLocacion = async (ID_LOCACION) => {
+    try {
+      const result = await axios.get(`${ENDPOINT}/activo?ID_LOCACION=${ID_LOCACION}`);
+      //console.log("login", result);
+      if (!result || !result.data || !result.data.payload) {
+        return ResponseController.error(
+          "Ocurrio un error de conexión, por favor intentelo denuevo mas tarde. Si el error persiste, contacte al administrador de Quantum Asset"
+        );
+      }
+      const { status, payload, message } = result.data;
+      return ResponseController.ok(status, message, payload);
+    } catch (error) {
+      return ResponseController.error(
+        "Ocurrio un error inesperado. Si el error persiste, contacte al administrador de Quantum Asset"
+      );
+    }
+  };
   static store = async (data) => {};
   static count = async (ID_LOCACION) => {
     try {
