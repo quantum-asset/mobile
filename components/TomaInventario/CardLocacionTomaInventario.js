@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,69 +8,50 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import {AuthController} from '../../controller/AuthController';
+import TagIcon from '../Icons/TagIcon';
+
 const Login = props => {
-  const {handleChangeView, currentProps} = props;
-  const [usuario, setUsuario] = useState('griskyh@gmail.com');
-  const [password, setPassword] = useState('');
-  const IniciarSesion = async () => {
-    if (usuario === '' || password === '') {
-      Alert.alert(
-        'Datos incompletos :(',
-        'No se ingreso el usuario o contraseña',
-      );
-    } else {
-      const {success, message, data} = await AuthController.login(
-        usuario,
-        password,
-      );
-      console.log('success: ', success);
-      console.log('message: ', message);
-      console.log('data: ', data);
-      if (success) {
-        Alert.alert('ADN cargado! Mega carga!!!');
-        handleChangeView?.(1, {ADN: 'MEGA CARGAAAA'});
-        //navigation.navigate('TomaInventario', {ADN: 'cargado'});
-      } else {
-        Alert.alert('NANIII');
-      }
-    }
+  const {openDetalle, locacion} = props;
+
+  const {
+    ID_LOCACION = 0,
+    POR_PROCESAR = 1,
+    OBSERVACIONES = '-',
+    ID_TOMA_INVENTARIO_X_LOCACION = 0,
+    DIRECCION = '-',
+    DENOMINACION = '-',
+    CANT_ACTIVOS = 1645,
+    ESTADO = 0,
+    ES_MUESTREO = 0,
+  } = locacion;
+  const handlePress = () => {
+    openDetalle?.(tomaInventario);
   };
-  const handleChangeUser = txt => {
-    setUsuario(txt);
-    console.log('usser', txt);
-  };
-  const handleChangePassword = txt => {
-    setPassword(txt);
-    console.log('psswrd', txt);
-  };
-  useEffect(() => {
-    console.log('rendered Login');
-  }, []);
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          source={require('../../static/logo-h-nb3.png')}
-          style={styles.img}
-        />
+      <View>
+        <Text style={styles.fecha}>{DENOMINACION}</Text>
       </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.txtInput}>Ingrese su usuario:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Usuario"
-          onChangeText={handleChangeUser}
-          value={usuario}
-        />
-      </View>
-      
 
-      <TouchableOpacity style={styles.btn} 
-      //onPress={IniciarSesion}
-      >
-        <Text style={styles.textbtn}>Iniciar Sesion</Text>
-      </TouchableOpacity>
+      <View>
+        <Text style={styles.title}>{`Inventario ${
+          ES_MUESTREO ? 'de muestreo' : ' programado (formal)'
+        }`}</Text>
+      </View>
+
+      <View>
+        <Text>{`${DIRECCION} Locaciones`}</Text>
+      </View>
+
+      <View>
+        <Text>{`${CANT_ACTIVOS} Activos Fijos`}</Text>
+      </View>
+      <View style={styles.action}>
+        <TouchableOpacity style={styles.btn} onPress={handlePress}>
+          <TagIcon />
+          <Text style={styles.textbtn}>Iniciar Toma de Inventarios</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -79,57 +60,55 @@ export default Login;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    backgroundColor: 'rgba(255, 255, 255, 0.89)',
-    borderRadius: 10,
-    width: '80%',
-    height: '70%',
-    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,1)',
+    borderRadius: 6,
+    margin: 5,
+    padding: 6,
+    alignItems: 'flex-start',
+    with: '100%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
-  imageContainer: {
+  title: {
+    fontSize: 16,
+    color: 'black',
     width: '100%',
-    height: '20%',
-    //backgroundColor: '#000',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 40,
+    textAlign: 'left',
   },
-  img: {
-    height: 70,
-    width: 225,
+  fecha: {
+    color: 'black',
+
+    fontSize: 20,
   },
-  input: {
-    borderWidth: 1,
-    height: 50,
-    borderColor: 'grey',
-    borderRadius: 4,
-    padding: 8,
-    fontSize: 18,
+  action: {
+    flexDirection: 'row',
     width: '100%',
+    //backgroundColor: '#86180e',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
   btn: {
-    marginTop: 60,
+    //marginTop: 60,
     backgroundColor: '#86180e',
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    height: 55,
-    width: '80%',
+    height: 35,
+    flexDirection: 'row',
+    //width: '80%',
+    padding: 4,
     borderRadius: 4,
   },
   textbtn: {
     color: 'white',
-    fontSize: 20,
-  },
-  txtInput: {
-    alignSelf: 'flex-start',
-    color: '#000',
-    fontSize: 20,
-    marginBottom: '2%',
-  },
-  inputGroup: {
-    marginBottom: '5%',
-    width: '80%',
-
-    alignItems: 'center',
+    fontSize: 12,
+    padding: 4,
   },
 });

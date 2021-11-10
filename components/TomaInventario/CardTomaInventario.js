@@ -8,9 +8,11 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
+import { parseDate } from '../../globals/date';
 import TagIcon from '../Icons/TagIcon';
 
 const CardTomaInventario = props => {
+  const {openDetalle, tomaInventario} = props;
   const {
     FECHA_INICIO = 'Nov. 23, 2022',
     CANT_LOCACIONES = 12,
@@ -18,14 +20,19 @@ const CardTomaInventario = props => {
     ACTIVOS_ENCONTRADOS = 0,
     ESTADO = 0,
     ES_MUESTREO = 0,
-  } = props;
+    LOCACIONES=[]
+  } = tomaInventario;
   useEffect(() => {
-    console.log('rendered CardToma');
+   // console.log('rendered CardToma',props);
   }, []);
+  ///open detallea
+  const handlePress = () => {
+    openDetalle?.(tomaInventario);
+  };
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.fecha}>{FECHA_INICIO}</Text>
+        <Text style={styles.fecha}>{parseDate(FECHA_INICIO)}</Text>
       </View>
 
       <View>
@@ -42,11 +49,7 @@ const CardTomaInventario = props => {
         <Text>{`${CANT_ACTIVOS} Activos Fijos`}</Text>
       </View>
       <View style={styles.action}>
-        
-        <TouchableOpacity
-          style={styles.btn}
-          //onPress={IniciarSesion}
-        >
+        <TouchableOpacity style={styles.btn} onPress={handlePress}>
           <TagIcon />
           <Text style={styles.textbtn}>Iniciar Toma de Inventarios</Text>
         </TouchableOpacity>

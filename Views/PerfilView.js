@@ -21,9 +21,28 @@ import {TomaInventarioController} from '../controller/TomaInventarioController';
 import CardTomaInventario from '../components/TomaInventario/CardTomaInventario';
 import {Dimensions} from 'react-native';
 
-import ImagePicker from 'react-native-image-picker';
+import * as ImagePicker from 'react-native-image-picker';
+import EditIcon from '../components/Icons/Edit';
+import CameraIcon from '../components/Icons/CameraIcon';
+import {mainColor} from '../globals/palette';
 const screenHeight = Dimensions.get('window').height;
-
+const backgroundImage =
+  'https://dev.page/_next/image?url=%2Fstatic%2Fpngs%2Fplaceholder-profile-cover-image.png&w=3840&q=75';
+const options = {
+  title: 'Select Image',
+  includeBase64: true,
+  customButtons: [
+    {
+      name: 'customOptionKey',
+      title: 'Choose file from Custom Option',
+    },
+  ],
+  saveToPhotos: true,
+  storageOptions: {
+    skipBackup: true,
+    path: 'images',
+  },
+};
 const PerfilView = props => {
   const {usuario, handleChangeView} = props;
   const {
@@ -48,81 +67,113 @@ const PerfilView = props => {
   const handleLogout = () => {
     handleChangeView?.(0);
   };
-  const [resourcePath, setResourcePath] = useState({});
+  const [resourcePath, setResourcePath] = useState(null);
+  const handleEditFoto = () => {
+    console.log('ImagePicker:', ImagePicker);
+    ImagePicker.launchImageLibrary(options, res => {
+      if (res?.assets?.[0]) {
+        console.log('Response = ', Object.keys(res));
+        console.log('Response.assets = ', res.assets[0]);
 
-  const selectFile = () => {
-    var options = {
-      title: 'Select Image',
-      customButtons: [
-        {
-          name: 'customOptionKey',
-          title: 'Choose file from Custom Option',
-        },
-      ],
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
+        setResourcePath(res.assets[0].uri);
 
-    ImagePicker.showImagePicker(options, res => {
-      console.log('Response = ', res);
-      if (res.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (res.error) {
-        console.log('ImagePicker Error: ', res.error);
-      } else if (res.customButton) {
-        console.log('User tapped custom button: ', res.customButton);
-
-        alert(res.customButton);
-      } else {
-        let source = res;
-        setResourcePath(source);
+        const base = res.assets[0].base64;
+        console.log('size', base.length);
+        console.log('base', base.slice(0, 40));
       }
     });
   };
+
+  const handleEditCamera = () => {
+    ImagePicker.launchCamera(options, res => {
+      //console.log('Response.assets = ', res.assets[0]);
+      if (res?.assets?.[0]) {
+        console.log('Response = ', Object.keys(res));
+        console.log('Response.assets = ', res.assets[0]);
+        setResourcePath(res.assets[0].uri);
+
+        const base = res.assets[0].base64;
+        console.log('size', base.length);
+        console.log('base', base.slice(0, 40));
+      }
+    });
+  };
+
   return (
     <MainContainer>
       <Header title={'Perfil de usuario'} />
       <Body style={styles.body}>
+        <Image
+          style={styles.imgBack}
+          source={{
+            uri: backgroundImage,
+          }}
+          resizeMode="cover"
+          blurRadius={1}
+        />
         {/* <ScrollView style={styles.scrollView}></ScrollView> */}
         <View style={styles.perfilContainer}>
+          <Text style={styles.txtLabel}>Foto: </Text>
           <View style={styles.imgContainer}>
-            <Image
-              source={{
-                uri: 'https://www.pngall.com/wp-content/uploads/5/Profile-PNG-Images.png',
-              }}
-              style={styles.img}
-            />
+            {resourcePath ? (
+              <View>
+                <Image source={{uri: resourcePath}} style={styles.img} />
+              </View>
+            ) : (
+              <Image
+                source={{
+                  uri: 'https://www.pngall.com/wp-content/uploads/5/Profile-PNG-Images.png',
+                }}
+                style={styles.img}
+              />
+            )}
+
+            <View style={styles.editPhotoButtons}>
+              <Text style={styles.editButton}>
+                <EditIcon onPress={handleEditFoto} color={mainColor} /> Desde
+                galeria
+              </Text>
+
+              <Text style={styles.editButton}>
+                <CameraIcon onPress={handleEditCamera} color={mainColor} />{' '}
+                Tomar foto
+              </Text>
+            </View>
           </View>
 
-          <Text>{NOMBRES || '-'}</Text>
-          <Text>{PRIMER_APELLIDO || '-'}</Text>
-          <Text>{SEGUNDO_APELLIDO || '-'}</Text>
-          <Text>{CORREO || '-'}</Text>
-          <Text>{rol?.[0]?.DENOMINACION || '-'}</Text>
-          <Text>{TIPO_DOCUMENTO_IDENTIDAD || '-'}</Text>
-          <Text>{NUM_DOCUMENTO_IDENTIDAD || '-'}</Text>
+          {/**dtaaaa */}
+          <View style={styles.rowLabel}>
+            <Text style={styles.txtLabel}>Nombres: </Text>
+            <Text style={styles.txtValue}>{NOMBRES || '-'}</Text>
+          </View>
+
+          <View style={styles.rowLabel}>
+            <Text style={styles.txtLabel}>Primer Apellido: </Text>
+            <Text style={styles.txtValue}>{PRIMER_APELLIDO || '-'}</Text>
+          </View>
+
+          <View style={styles.rowLabel}>
+            <Text style={styles.txtLabel}>Segundo Apellido: </Text>
+            <Text style={styles.txtValue}>{SEGUNDO_APELLIDO || '-'}</Text>
+          </View>
+
+          <View style={styles.rowLabel}>
+            <Text style={styles.txtLabel}>Correo: </Text>
+            <Text style={styles.txtValue}>{CORREO || '-'}</Text>
+          </View>
+          <View style={styles.rowLabel}>
+            <Text style={styles.txtLabel}>Tipo documento: </Text>
+            <Text style={styles.txtValue}>
+              {TIPO_DOCUMENTO_IDENTIDAD || '-'}
+            </Text>
+          </View>
+          <View style={styles.rowLabel}>
+            <Text style={styles.txtLabel}>Nro documento: </Text>
+            <Text style={styles.txtValue}>
+              {NUM_DOCUMENTO_IDENTIDAD || '-'}
+            </Text>
+          </View>
         </View>
-
-        {/**image picker */}
-        <Image
-          source={{
-            uri: 'data:image/jpeg;base64,' + resourcePath.data,
-          }}
-          style={{width: 100, height: 100}}
-        />
-
-        <Image
-          source={{uri: resourcePath.uri}}
-          style={{width: 200, height: 200}}
-        />
-
-        <Text style={{alignItems: 'center'}}>{resourcePath.uri}</Text>
-
-        <TouchableOpacity onPress={selectFile} style={styles.button}>
-          <Text style={styles.buttonText}>Select File</Text>
-        </TouchableOpacity>
       </Body>
 
       <Footer
@@ -136,6 +187,18 @@ const PerfilView = props => {
 export default PerfilView;
 
 const styles = StyleSheet.create({
+  rowLabel: {
+    flexDirection: 'row',
+    marginVertical:4,
+    alignItems: 'center',
+  },
+  txtValue: {
+    color: 'black',
+    fontSize: 15,
+  },
+  txtLabel: {
+    fontSize: 14,
+  },
   button: {
     width: 250,
     height: 60,
@@ -145,7 +208,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginBottom: 12,
   },
-
+  editPhotoButtons: {
+    flexDirection: 'column',
+  },
+  editButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   buttonText: {
     textAlign: 'center',
     fontSize: 15,
@@ -161,15 +230,16 @@ const styles = StyleSheet.create({
     margin: 20,
     margin: 20,
     shadowColor: '#000',
-    backgroundColor: 'rgba(255,255,255,1)',
+    backgroundColor: 'rgba(255,255,255,0.9)',
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
+    borderRadius: 6,
     elevation: 5,
+    padding: 40,
   },
   imgContainer: {
     alignItems: 'center',
@@ -177,6 +247,7 @@ const styles = StyleSheet.create({
   img: {
     height: 120,
     width: 120,
+    borderRadius: 6,
   },
   text: {
     fontSize: 42,
@@ -185,7 +256,15 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   body: {
-    padding: 7,
+    position: 'relative',
+    //  padding: 7,
+  },
+  imgBack: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: '100%',
+    width: '100%',
   },
   inputGroup: {
     width: '100%',

@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {AuthController} from '../../controller/AuthController';
 const Login = props => {
-  const {handleChangeView, currentProps,hanleChangeUsuario} = props;
+  const {handleChangeView, currentProps, hanleChangeUsuario} = props;
   const [usuario, setUsuario] = useState('griskyh@gmail.com');
   const [password, setPassword] = useState('');
   const IniciarSesion = async () => {

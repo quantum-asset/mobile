@@ -27,7 +27,7 @@ const NavigatorSSJ = props => {
     case 0:
       return <HomeViewLogin {...props} />;
     case 1:
-      return <Other {...props} />;
+      return <PerfilView {...props} />;
       case 2:
       return <TomasLocacionesView {...props} />;
     default:
