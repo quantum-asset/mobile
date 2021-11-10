@@ -12,6 +12,7 @@ import {parseDate} from '../../globals/date';
 import TagIcon from '../Icons/TagIcon';
 
 const CardLocacionTomaInventario = props => {
+  console.log("CardLocacionTomaInventario props", props);
   const {openDetalle, locacion} = props;
   //console.log('CardTomaInventario props', props);
   const {DENOMINACION = 'DENOMINACION DE LA LOCCION'} = locacion;

@@ -21,30 +21,23 @@ import CardLocacionTomaInventario from '../../components/TomaInventario/CardLoca
 const screenHeight = Dimensions.get('window').height;
 
 const ListaLocacionesTomasInventario = props => {
-
-  const {currTomaInv, locaciones, goBack, handleCurrLocacion} = props;
+  const {currTomaInv, locaciones=[], goBack, handleCurrLocacion} = props;
   console.log('ListaLocacionesTomasInventario currTomaInv =>', currTomaInv);
   console.log('ListaLocacionesTomasInventario locaciones =>', locaciones);
 
-
-
-
-
-  const [listOfLocaciones, setListOfLocaciones] = useState([]);
+  //const [listOfLocaciones, setListOfLocaciones] = useState([]);
   const [listOfLocacionesFilter, setListOfLocacionesFilter] = useState([]);
 
-  const init = async locaciones => {
-    setListOfLocaciones(locaciones);
+  const init = async => {
+    console.log('init Locaciones', locaciones);
+    //setListOfLocaciones(locaciones);
     setListOfLocacionesFilter(locaciones);
   };
 
   useEffect(() => {
-    init(locaciones);
-    return () => {
-      setListOfLocacionesFilter([]);
-      setListOfLocaciones([]);
-    };
-  }, [locaciones]);
+    init();
+    //filtrarPorLocacion(filterLocacion);
+  }, []);
   ////filtrooo
   const [filterLocacion, setFilterLocacion] = useState('');
 
@@ -54,7 +47,7 @@ const ListaLocacionesTomasInventario = props => {
   const filtrarPorLocacion = filtro => {
     console.log('filtro', filtro);
     if (filtro && filtro.length > 0) {
-      const currList = listOfLocaciones;
+      const currList = locaciones;
       let data = [];
       for (let i = 0; i < currList.length; i++) {
         console.log('locaion', currList[i]);
@@ -69,7 +62,7 @@ const ListaLocacionesTomasInventario = props => {
       }
       setListOfLocacionesFilter(data);
     } else {
-      setListOfLocacionesFilter(listOfLocaciones);
+      setListOfLocacionesFilter(locaciones);
     }
   };
   useEffect(() => {
@@ -84,37 +77,36 @@ const ListaLocacionesTomasInventario = props => {
       <Header title={'Locaciones'} />
       <Body style={styles.body}>
         <TouchableOpacity
-        style={styles.goBack}
-        onPress={() => {
-          goBack?.();
-        }}>
-        <Icon name="arrow-back" size={30} color={mainColor} />
-        <Text>Regresar a Tomas de inventario</Text>
-      </TouchableOpacity>
-      <Title title={'Por favor, elija una locacion:'} />
+          style={styles.goBack}
+          onPress={() => {
+            goBack?.();
+          }}>
+          <Icon name="arrow-back" size={30} color={mainColor} />
+          <Text>Regresar a Tomas de inventario</Text>
+        </TouchableOpacity>
+        <Title title={'Por favor, elija una locacion:'} />
 
-      <View style={styles.inputGroup}>
-        <TextInput
-          style={styles.input}
-          placeholder="Buscar por locación"
-          onChangeText={handleChangeLocacion}
-        />
-        <View style={styles.iconContainer}>
-          <Icon name="search" size={30} color="white" />
-        </View>
-      </View>
-
-      <ScrollView style={styles.scrollView}>
-        {listOfLocacionesFilter.map((locacion, index) => (
-          <CardLocacionTomaInventario
-            key={index}
-            locacion={locacion}
-            openDetalle={() => selectLocacion(locacion)}
+        <View style={styles.inputGroup}>
+          <TextInput
+            style={styles.input}
+            placeholder="Buscar por locación"
+            onChangeText={handleChangeLocacion}
           />
-        ))}
-      </ScrollView>
+          <View style={styles.iconContainer}>
+            <Icon name="search" size={30} color="white" />
+          </View>
+        </View>
+        <Text>{listOfLocacionesFilter.length}</Text>
+        <ScrollView style={styles.scrollView}>
+          {listOfLocacionesFilter.map((locacion, index) => (
+            <CardLocacionTomaInventario
+              key={index}
+              locacion={locacion}
+              openDetalle={() => selectLocacion(locacion)}
+            />
+          ))}
+        </ScrollView>
       </Body>
-      
     </>
   );
 };

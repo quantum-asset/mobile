@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   body: {
     //padding: 7,
-    backgroundColor: 'rgba(255,255,255,1)',
+    backgroundColor: 'rgba(255,255,255,0.95)',
   },
   inputGroup: {
     width: '100%',
