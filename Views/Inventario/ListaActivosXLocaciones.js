@@ -19,6 +19,10 @@ import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {mainColor} from '../../globals/palette';
 import {ActivoController} from '../../controller/ActivoController';
 import TableActivos from '../../components/Table/Table';
+import ScanIcon from '../../components/Icons/ScanIcon';
+import StopIcon from '../../components/Icons/StopIcon';
+import DiscardIcon from '../../components/Icons/DiscardIcon';
+import SaveIcon from '../../components/Icons/SaveIcon';
 const screenHeight = Dimensions.get('window').height;
 
 const ListaActivoXLocaciones = props => {
@@ -65,6 +69,81 @@ const ListaActivoXLocaciones = props => {
   const handleChangeActivo = txt => {
     setActivosFilter(txt);
   };
+  ///start scanning
+  const [scanStart, setScanStart] = useState(false);
+  const handleStartScanning = () => {
+    console.log('init scan');
+    setActivosFilter('');
+    setScanStart(true);
+    scanActivos();
+  };
+  const handleStoptScanning = () => {
+    setScanStart(false);
+    Alert.alert('Estatus', 'Se detuvo el escaneo');
+  };
+  const scanActivos = async () => {
+    console.log('start scanning con scanStart...',scanStart);
+    let i=0;
+    //lista que ira cambiando
+    let fullList=listActivosFiltrada;
+    while (1) {
+      console.log('calling... con state', scanStart);
+
+      const result = await TomaInventarioController.scan(listActivos);
+
+      if (result) {
+        const updatedList = [];
+        for (let i = 0; i < fullList.length; i++) {
+          if (result.includes(fullList[i].ID_ACTIVO)) {
+            updatedList.push({...fullList[i], ENCONTRADO: 1});
+          } else {
+            updatedList.push(fullList[i]);
+          }
+        }
+
+        //setListActivos(updatedList);
+
+        const amountOfEncontrados = updatedList.filter(
+          x => x.ENCONTRADO === 1,
+        ).length;
+        const amountOfEncontradosTtolal = fullList.filter(
+          x => x.ENCONTRADO === 1,
+        ).length;
+
+        
+        setListActivosFiltrada(updatedList);
+        handleChangeActivosEncontrados(amountOfEncontrados);
+        
+        fullList=updatedList;
+        
+        console.log('amountOfEncontrados', amountOfEncontrados);
+        console.log('amountOfEncontradosTtolal', amountOfEncontradosTtolal);
+        console.log('listActivos.length', fullList.length);
+        
+        
+        if (amountOfEncontrados === fullList.length) {
+          handleStoptScanning();
+          Alert.alert('Estatus', 'Se encontraron todos los activos');
+          break;
+        }
+      } else {
+        Alert.alert('Error', 'Ocurrio un error, porfavor reintente nuevamente');
+        break;
+      }
+      if (i===20) {
+        setScanStart(false);
+        console.log('ended by click');
+        break;
+      }
+    }
+    console.log('ended');
+  };
+  /* useEffect(() => {
+    if (scanStart) {
+      ///start scanning
+      scanActivos();
+    }
+  }, [scanStart]); */
   return (
     <>
       <Header title={'Toma de inventario'} />
@@ -101,6 +180,7 @@ const ListaActivoXLocaciones = props => {
         {/**  filtro */}
         <View style={styles.inputGroup}>
           <TextInput
+            disable={!scanStart}
             style={styles.input}
             placeholder="Buscar activo"
             onChangeText={handleChangeActivo}
@@ -122,25 +202,44 @@ const ListaActivoXLocaciones = props => {
           />
         </ScrollView>
         <View style={styles.actionScanGroup}>
+          {scanStart ? (
+            <TouchableOpacity style={styles.btn} onPress={handleStoptScanning}>
+              <StopIcon size={30} color={'white'} />
+              <Text style={styles.textbtn}>Detener</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.btn} onPress={handleStartScanning}>
+              <ScanIcon size={30} color={'white'} />
+              <Text style={styles.textbtn}>Escanear</Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={styles.btn}
-            //onPress={() => {            goBack?.();          }}
-          >
-            {/* <Icon name="arrow-back" size={30} color={mainColor} /> */}
-            <Text style={styles.textbtn}>Escanear</Text>
+            onPress={() => {
+              Alert.alert(
+                'Descartar cambios',
+                `¿Está seguro que desea descartar los cambios?`,
+              );
+              setActivosEncontrados(0);
+              const listRestore = listActivos.map(x => {
+                const newX = {...x, ENCONTRADO: 0};
+                return newX;
+              });
+              setListActivos(listRestore);
+              setListActivosFiltrada(listRestore);
+            }}>
+            <DiscardIcon size={30} color={'white'} />
+            <Text style={styles.textbtn}>Descartar</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btn}
-            //onPress={() => {            goBack?.();          }}
-          >
-            {/* <Icon name="arrow-back" size={30} color={mainColor} /> */}
-            <Text style={styles.textbtn}>Borrar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.btn}
-            //onPress={() => {           goBack?.();          }}
-          >
-            <Icon name="arrow-back" size={30} color={'white'} />
+            onPress={() => {
+              Alert.alert(
+                'Confirmación de procesamiento',
+                `¿Está seguro de iniciar el registro de la toma de inventario?\n\nDepués no podrá agregar observaciones y/o evidencias.`,
+              );
+            }}>
+            <SaveIcon size={30} color={'white'} />
             <Text style={styles.textbtn}>Procesar</Text>
           </TouchableOpacity>
         </View>
@@ -173,6 +272,7 @@ const styles = StyleSheet.create({
   textbtn: {
     color: 'white',
     fontSize: 16,
+    marginHorizontal: 2,
   },
   infoBar: {
     width: '100%',

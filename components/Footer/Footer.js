@@ -7,21 +7,21 @@ import WarehouseIcon from './WarehouseIcon';
 const Footer = props => {
   const {title, active = 0, handleChangeView, handleLogout} = props;
   const handlePressWarehouse = async () => {
-    Alert.alert('Titulo', 'Se presiono el almacen icon');
+    //Alert.alert('Titulo', 'Se presiono el almacen icon');
     //setActive(0);
     if (active !== 0) {
       handleChangeView?.(2, {});
     }
   };
   const handlePressUsuario = async () => {
-    Alert.alert('Titulo', 'Se presiono el usuario icon');
+    //Alert.alert('Titulo', 'Se presiono el usuario icon');
     //setActive(1);
     if (active !== 1) {
       handleChangeView?.(1, {});
     }
   };
   const handlePressLogout = async () => {
-    Alert.alert('Titulo', 'Se presiono el logout icon');
+    Alert.alert('Titulo', 'Se ha cerrado la sesión');
     //setActive(2);
     handleLogout?.();
   };

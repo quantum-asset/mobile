@@ -9,15 +9,9 @@ import {
   FlatList,
   Alert,
 } from 'react-native';
-import Body from '../components/Body/Body';
 import Footer from '../components/Footer/Footer';
-import SearchIcon from '../components/Form/SearchIcon';
-import Header from '../components/Header/Header';
 import MainContainer from '../components/MainContainer/MainContainer';
-import Title from '../components/Title/Title';
-import Icon from 'react-native-vector-icons/dist/Ionicons';
 import {TomaInventarioController} from '../controller/TomaInventarioController';
-import CardTomaInventario from '../components/TomaInventario/CardTomaInventario';
 import {Dimensions} from 'react-native';
 import ListaTomasInventario from './Inventario/ListaTomaInventario';
 import ListaLocacionesTomasInventario from './Inventario/ListaLocacionesTomaInventario';
@@ -78,7 +72,7 @@ const TomasLocacionesView = props => {
   const [currActivo, setCurrActivo] = useState(undefined);
   const [activoDetalleView, setActivoDetalleView] = useState(false);
   const handleCurrActivo = activo => {
-    console.log("activo selected", activo);
+    console.log('activo selected', activo);
     /* setCurrActivo(activo);
     setActivosView(false);
     setActivoDetalleView(true); */
@@ -126,21 +120,18 @@ const TomasLocacionesView = props => {
       )}
 
       {activosView && currLocacion && (
-       
-         
-          <ListaActivoXLocaciones
-            ID_LOCACION={currLocacion.ID_LOCACION}
-            currTomaInv={currTomaInv}
-            currLocacion={currLocacion}
-            goBack={() => {
-              setLocacionesView(false);
-              setTomasInventarioView(true);
-              setCurrLocacion(undefined);
-            }}
-            handleCurrActivo={handleCurrActivo}
-            usuario={usuario}
-          />
-        
+        <ListaActivoXLocaciones
+          ID_LOCACION={currLocacion.ID_LOCACION}
+          currTomaInv={currTomaInv}
+          currLocacion={currLocacion}
+          goBack={() => {
+            setLocacionesView(false);
+            setTomasInventarioView(true);
+            setCurrLocacion(undefined);
+          }}
+          handleCurrActivo={handleCurrActivo}
+          usuario={usuario}
+        />
       )}
       {activoDetalleView && currActivo && (
         <DetalleActivo
@@ -162,51 +153,3 @@ const TomasLocacionesView = props => {
   );
 };
 export default TomasLocacionesView;
-
-const styles = StyleSheet.create({
-  scrollView: {
-    //backgroundColor: 'pink',
-    marginHorizontal: 5,
-    height: screenHeight - 280,
-  },
-
-  text: {
-    fontSize: 42,
-  },
-  list: {
-    height: '100%',
-  },
-  body: {
-    //padding: 7,
-    backgroundColor: 'rgba(255,255,255,1)',
-  },
-  inputGroup: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  input: {
-    borderWidth: 1,
-    height: 40,
-    borderColor: 'grey',
-    borderRadius: 4,
-    padding: 8,
-    fontSize: 18,
-    width: '84%',
-  },
-  iconContainer: {
-    alignItems: 'center',
-    padding: '1%',
-    height: '100%',
-    with: '20%',
-    backgroundColor: '#86180e',
-  },
-});
-/*    <FlatList
-                  data={listOfTomaInv}
-                  renderItem={({POR_PROCESAR}) => (
-                    <CardTomaInventario ESTADO={POR_PROCESAR} />
-                  )}
-                /> */

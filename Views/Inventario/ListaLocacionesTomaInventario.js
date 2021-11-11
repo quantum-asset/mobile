@@ -99,7 +99,7 @@ const ListaLocacionesTomasInventario = props => {
             <Icon name="search" size={30} color="white" />
           </View>
         </View>
-        <Text>{listOfLocacionesFilter.length}</Text>
+        {/* <Text>{listOfLocacionesFilter.length}</Text> */}
         <ScrollView style={styles.scrollView}>
           {listOfLocacionesFilter.map((locacion, index) => (
             <CardLocacionTomaInventario

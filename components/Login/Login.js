@@ -28,7 +28,7 @@ const Login = props => {
       console.log('message: ', message);
       console.log('data: ', data);
       if (success) {
-        Alert.alert('ADN cargado! Mega carga!!!');
+        Alert.alert('Inicio de sesión correcto',"Bienvenido(a), "+ data.NOMBRES);
         hanleChangeUsuario?.(data);
         handleChangeView?.(1, {ADN: 'MEGA CARGAAAA'});
         //navigation.navigate('TomaInventario', {ADN: 'cargado'});
