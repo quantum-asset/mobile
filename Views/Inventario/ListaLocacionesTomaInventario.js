@@ -77,14 +77,16 @@ const ListaLocacionesTomasInventario = props => {
     <>
       <Header title={'Locaciones'} />
       <Body style={styles.body}>
-        <TouchableOpacity
-          style={styles.goBack}
-          onPress={() => {
-            goBack?.();
-          }}>
-          <Icon name="arrow-back" size={30} color={mainColor} />
-          <Text>Regresar a Tomas de inventario</Text>
-        </TouchableOpacity>
+        <View style={styles.goBackContainer}>
+          <TouchableOpacity
+            style={styles.goBack}
+            onPress={() => {
+              goBack?.();
+            }}>
+            <Icon name="arrow-back" size={30} color={mainColor} />
+            <Text>Regresar a Tomas de inventario</Text>
+          </TouchableOpacity>
+        </View>
         <Title title={'Por favor, elija una locacion:'} />
 
         <View style={styles.inputGroup}>
@@ -114,6 +116,13 @@ const ListaLocacionesTomasInventario = props => {
 export default ListaLocacionesTomasInventario;
 
 const styles = StyleSheet.create({
+  goBackContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    width: '100%',
+  },
   goBack: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -142,6 +151,8 @@ const styles = StyleSheet.create({
   },
 
   input: {
+    backgroundColor: 'rgba(255,255,255,1)',
+
     borderWidth: 1,
     height: 40,
     borderColor: 'grey',

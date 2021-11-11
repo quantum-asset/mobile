@@ -78,9 +78,10 @@ const TomasLocacionesView = props => {
   const [currActivo, setCurrActivo] = useState(undefined);
   const [activoDetalleView, setActivoDetalleView] = useState(false);
   const handleCurrActivo = activo => {
-    setCurrActivo(activo);
+    console.log("activo selected", activo);
+    /* setCurrActivo(activo);
     setActivosView(false);
-    setActivoDetalleView(true);
+    setActivoDetalleView(true); */
   };
   ////LOGOUTR
   const handleLogout = () => {

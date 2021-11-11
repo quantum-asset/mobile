@@ -50,9 +50,10 @@ const CardTomaInventario = props => {
         <Text>{`${CANT_ACTIVOS} Activos Fijos`}</Text>
       </View>
       <View style={styles.action}>
+     
         <TouchableOpacity style={styles.btn} onPress={handlePress}>
           <TagIcon />
-          <Text style={styles.textbtn}>Iniciar Toma de Inventarios</Text>
+          <Text style={styles.textbtn}>Ver Locaciones</Text>
         </TouchableOpacity>
       </View>
       {/*  <TouchableOpacity style={styles.btn} onPress={IniciarSesion}>
