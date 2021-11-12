@@ -38,6 +38,74 @@ export class TomaInventarioController {
       }, 1500);
     });
   };
-  static store = async data => {};
+  static storeTomaInventarioXLocacion = async data => {
+    try {
+      const result = await axios.post(
+        `${ENDPOINT}/toma-inventario/activo`,
+        data,
+      );
+      //console.log("login", result);
+      if (!result || !result.data || !result.data.payload) {
+        return ResponseController.error(
+          'Ocurrio un error de conexión, por favor intentelo denuevo mas tarde. Si el error persiste, contacte al administrador de Quantum Asset',
+        );
+      }
+      const {status, payload, message} = result.data;
+      return ResponseController.ok(status, message, payload);
+    } catch (error) {
+      return ResponseController.error(
+        'Ocurrio un error inesperado. Si el error persiste, contacte al administrador de Quantum Asset',
+      );
+    }
+  };
+  static addObservacionTomaInventario = async (
+    ID_TOMA_INVENTARIO,
+    OBSERVACIONES = '',
+  ) => {
+    try {
+      console.log('CONTROLLER:', ID_TOMA_INVENTARIO, OBSERVACIONES);
+      const result = await axios.put(
+        `${ENDPOINT}/toma-inventario/${ID_TOMA_INVENTARIO}`,
+        {OBSERVACIONES: OBSERVACIONES},
+      );
+      //console.log("login", result);
+      if (!result || !result.data || !result.data.payload) {
+        return ResponseController.error(
+          'Ocurrio un error de conexión, por favor intentelo denuevo mas tarde. Si el error persiste, contacte al administrador de Quantum Asset',
+        );
+      }
+      const {status, payload, message} = result.data;
+      return ResponseController.ok(status, message, payload);
+    } catch (error) {
+      return ResponseController.error(
+        'Ocurrio un error inesperado. Si el error persiste, contacte al administrador de Quantum Asset',
+      );
+    }
+  };
+  static addObservacionLocacionXTomaInventario = async (
+    ID_TOMA_INVENTARIO,
+    ID_LOCACION,
+    OBSERVACIONES = '',
+  ) => {
+    try {
+      const result = await axios.put(
+        `${ENDPOINT}/toma-inventario/locaciones/${ID_LOCACION}/${ID_TOMA_INVENTARIO}`,
+        {OBSERVACIONES},
+      );
+      //console.log("login", result);
+      if (!result || !result.data || !result.data.payload) {
+        return ResponseController.error(
+          'Ocurrio un error de conexión, por favor intentelo denuevo mas tarde. Si el error persiste, contacte al administrador de Quantum Asset',
+        );
+      }
+      const {status, payload, message} = result.data;
+      return ResponseController.ok(status, message, payload);
+    } catch (error) {
+      return ResponseController.error(
+        'Ocurrio un error inesperado. Si el error persiste, contacte al administrador de Quantum Asset',
+      );
+    }
+  };
+  static TomaInventarioXActivoAddObservacion = async () => {};
   static edit = async (id, data) => {};
 }

@@ -21,7 +21,7 @@ const Footer = props => {
     }
   };
   const handlePressLogout = async () => {
-    Alert.alert('Titulo', 'Se ha cerrado la sesión');
+    Alert.alert('Cierre de sesión', 'Se ha cerrado la sesión');
     //setActive(2);
     handleLogout?.();
   };

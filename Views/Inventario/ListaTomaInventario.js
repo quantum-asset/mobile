@@ -19,11 +19,12 @@ import {Dimensions} from 'react-native';
 const screenHeight = Dimensions.get('window').height;
 
 const ListaTomasInventario = props => {
-  const {tomasInventario, usuario, handleCurrentTomaInv} = props;
+  const {tomasInventario, usuario, handleCurrentTomaInv, handleUpdate} = props;
 
   const [listOfTomaInv, setListOfTomaInv] = useState([]);
 
   const init = async tomasInventario => {
+    setListOfTomaInv([]);
     setListOfTomaInv(tomasInventario);
   };
 
@@ -34,7 +35,7 @@ const ListaTomasInventario = props => {
       setListOfTomaInv([]);
     }; */
   }, [tomasInventario]);
- 
+
   return (
     <>
       <Header title={'Tomas de inventario'} />
@@ -48,11 +49,12 @@ const ListaTomasInventario = props => {
               openDetalle={() => {
                 handleCurrentTomaInv?.(TOMA_INVENTARIO);
               }}
+              handleUpdate={handleUpdate}
             />
           ))}
           {listOfTomaInv.length === 0 && (
             <Text>
-              Aun no se has sido asignado a procesos de toma de inventario
+              Aun no ha sido asignado a procesos de toma de inventario
             </Text>
           )}
         </ScrollView>

@@ -19,13 +19,14 @@ import ListaActivoXLocaciones from './Inventario/ListaActivosXLocaciones';
 import DetalleActivo from './Inventario/DetalleActivo';
 const screenHeight = Dimensions.get('window').height;
 
-const TomasLocacionesView = props => {
+const TomaInventarioMainView = props => {
   const {handleChangeView, usuario} = props;
   const [listOfTomaInv, setListOfTomaInv] = useState([]);
 
   const init = async () => {
+    setListOfTomaInv([]);
     const {success, data, message} = await TomaInventarioController.list(
-      usuario?.ID_USUARIO || 7,
+      usuario?.ID_USUARIO,
     );
 
     if (success) {
@@ -82,17 +83,23 @@ const TomasLocacionesView = props => {
     handleChangeView?.(0);
   };
 
+  const [innerUpdate, setInnerUpdate] = useState(false);
+  const handleUpdate = () => {
+    setInnerUpdate(!innerUpdate);
+  };
   useEffect(() => {
+    console.log('Se llamo a inner update', innerUpdate);
+
     init();
-    return () => {
-      setTomasInventario(true);
+   /*  return () => {
+      //setTomasInventario(true);
       setLocacionesView(false);
       setActivosView(false);
       setActivoDetalleView(false);
       setCurrTomaInv(undefined);
       setCurrActivo(undefined);
-    };
-  }, []);
+    }; */
+  }, [innerUpdate]);
 
   return (
     <MainContainer>
@@ -101,6 +108,7 @@ const TomasLocacionesView = props => {
           {...props}
           tomasInventario={listOfTomaInv}
           handleCurrentTomaInv={handleCurrentTomaInv}
+          handleUpdate={handleUpdate}
         />
       )}
 
@@ -115,6 +123,7 @@ const TomasLocacionesView = props => {
           handleCurrLocacion={handleCurrLocacion}
           locaciones={currTomaInv.LOCACIONES}
           currTomaInv={currTomaInv}
+          handleUpdate={handleUpdate}
         />
         /*  <Text>se abrio</Text> */
       )}
@@ -131,6 +140,7 @@ const TomasLocacionesView = props => {
           }}
           handleCurrActivo={handleCurrActivo}
           usuario={usuario}
+          handleUpdate={handleUpdate}
         />
       )}
       {activoDetalleView && currActivo && (
@@ -141,6 +151,7 @@ const TomasLocacionesView = props => {
             setActivoDetalleView(false);
             setCurrActivo(undefined);
           }}
+          handleUpdate={handleUpdate}
         />
       )}
 
@@ -152,4 +163,4 @@ const TomasLocacionesView = props => {
     </MainContainer>
   );
 };
-export default TomasLocacionesView;
+export default TomaInventarioMainView;

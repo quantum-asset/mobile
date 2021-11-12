@@ -11,7 +11,8 @@ import {
 import HomeViewLogin from '../Views/HomeViewLogin';
 import Other from '../Views/Other';
 import PerfilView from '../Views/PerfilView';
-import TomasLocacionesView from '../Views/TomasLocacionesView';
+import TomaInventarioMainView from '../Views/TomaInventarioMainView';
+//import TomaInventarioMainView from '../Views/TomaInventarioMainView';
 
 const NavigatorSSJ = props => {
   const {
@@ -29,7 +30,7 @@ const NavigatorSSJ = props => {
     case 1:
       return <PerfilView {...props} />;
       case 2:
-      return <TomasLocacionesView {...props} />;
+      return <TomaInventarioMainView {...props} />;
     default:
       return <HomeViewLogin {...props} />;
   }

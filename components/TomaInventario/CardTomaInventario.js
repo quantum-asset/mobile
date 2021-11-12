@@ -9,10 +9,16 @@ import {
   Alert,
 } from 'react-native';
 import {parseDate} from '../../globals/date';
+import {mainColor} from '../../globals/palette';
 import TagIcon from '../Icons/TagIcon';
+import SuperModal from '../SuperModal/SuperModal';
+import {Dimensions} from 'react-native';
+import {TomaInventarioController} from '../../controller/TomaInventarioController';
+import Button from '../Button/Button';
+const screenWidth = Dimensions.get('window').width;
 
 const CardTomaInventario = props => {
-  const {openDetalle, tomaInventario} = props;
+  const {openDetalle, tomaInventario, handleUpdate} = props;
   //console.log('CardTomaInventario props', props);
   const {
     FECHA_INICIO = 'Nov. 23, 2022',
@@ -21,10 +27,39 @@ const CardTomaInventario = props => {
     ACTIVOS_ENCONTRADOS = 0,
     POR_PROCESAR,
     ES_MUESTREO = 0,
+    OBSERVACIONES,
+    FECHA_FIN,
     LOCACIONES = [],
+    ID_TOMA_INVENTARIO,
   } = tomaInventario;
+  const [observaciones, setObservaciones] = useState(OBSERVACIONES || '');
+  const [openModal, setOpenModal] = useState(false);
+  const handleSaveObservacion = async () => {
+    const {success, data, message} =
+      await TomaInventarioController.addObservacionTomaInventario(
+        ID_TOMA_INVENTARIO,
+        observaciones,
+      );
+    console.log('TI data', data);
+    console.log('TI message', message);
+    uppdateObservacionses();
+    handleCloseModal();
+  };
+  const handleCloseModal = async () => {
+    setOpenModal(false);
+    setObservaciones(OBSERVACIONES || '');
+  };
+  //avisar componente padre que se ha actualizado y debe llamar denuevo al API
+  const uppdateObservacionses = () => {
+    //controller
+    handleUpdate?.();
+  };
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
   useEffect(() => {
     // console.log('rendered CardToma',props);
+    
   }, []);
   ///open detallea
   const handlePress = () => {
@@ -46,25 +81,87 @@ const CardTomaInventario = props => {
         <Text>{`${CANT_LOCACIONES} Locaciones`}</Text>
       </View>
 
-      <View>
+      {/* <View>
         <Text>{`${CANT_ACTIVOS} Activos Fijos`}</Text>
+      </View> */}
+      <View>
+        <Text>{`Observaciones: ${OBSERVACIONES}`}</Text>
       </View>
+      <View>
+        <Text>{`Fecha de registro: ${FECHA_FIN}`}</Text>
+      </View>
+
       <View style={styles.action}>
-     
-        <TouchableOpacity style={styles.btn} onPress={handlePress}>
-          <TagIcon />
-          <Text style={styles.textbtn}>Ver Locaciones</Text>
-        </TouchableOpacity>
+        <Button
+          type="secondary"
+          onPress={handleOpenModal}
+          label="Agregar Observaciones"
+        />
+        <Button type="primary" onPress={handlePress} label="Ver Locaciones">
+          {/* <TagIcon /> */}
+        </Button>
       </View>
       {/*  <TouchableOpacity style={styles.btn} onPress={IniciarSesion}>
         <Text style={styles.textbtn}>Iniciar Sesion</Text>
       </TouchableOpacity> */}
+      <SuperModal
+        visible={openModal}
+        onClose={handleCloseModal}
+        title={'Observaciones'}
+        actions={
+          <View style={styles.action}>
+            <Button
+              type="secondary"
+              onPress={handleCloseModal}
+              label="Descartar"
+            />
+            <Button
+              type="primary"
+              onPress={handleSaveObservacion}
+              label="Guardar"
+            />
+          </View>
+        }>
+        <View style={styles.modalContainer}>
+          <Text style={styles.txtModalSub}>Agregar observaciones: </Text>
+          <TextInput
+            style={styles.inputArea}
+            placeholder="Observaciones"
+            onChangeText={txt => setObservaciones(txt)}
+            value={observaciones}
+            multiline={true}
+            underlineColorAndroid="transparent"
+            numberOfLines={4}
+          />
+        </View>
+      </SuperModal>
     </View>
   );
 };
 export default CardTomaInventario;
 
 const styles = StyleSheet.create({
+  txtModalSub: {
+    color: 'black',
+    fontSize: 16,
+  },
+  modalContainer: {
+    width: '100%',
+    alignItems: 'flex-start',
+  },
+  inputArea: {
+    marginVertical: 4,
+    borderWidth: 1,
+    minHeight: 15,
+
+    borderColor: 'grey',
+    borderRadius: 4,
+    padding: 8,
+    fontSize: 18,
+    width: '100%',
+    //width: (80 * screenWidth) / 100,
+  },
+ 
   container: {
     flexDirection: 'column',
     backgroundColor: 'rgba(255,255,255,1)',
@@ -86,34 +183,19 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     color: 'black',
-    width: '100%',
+    //width: '100%',
     textAlign: 'left',
   },
   fecha: {
     fontSize: 20,
   },
   action: {
+    paddingTop: 3,
     flexDirection: 'row',
     width: '100%',
     //backgroundColor: '#86180e',
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
-  btn: {
-    //marginTop: 60,
-    backgroundColor: '#86180e',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    height: 35,
-    flexDirection: 'row',
-    //width: '80%',
-    padding: 4,
-    borderRadius: 4,
-  },
-  textbtn: {
-    color: 'white',
-    fontSize: 12,
-    padding: 4,
-  },
+  
 });

@@ -44,7 +44,7 @@ const TableActivos = props => {
       {dataActivos.map((activo, index) => (
         <View key={index} style={styles.rowTable}>
           <View style={styles.cellData20}>
-            <Text>{activo.ID_TAG}</Text>
+            <Text>{activo.CODIGO}</Text>
            {/*  <Text>hvgb-sdvsdv-sdvsv</Text> */}
           </View>
           <View style={styles.cellData40}>

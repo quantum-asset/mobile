@@ -21,23 +21,40 @@ import CardLocacionTomaInventario from '../../components/TomaInventario/CardLoca
 const screenHeight = Dimensions.get('window').height;
 
 const ListaLocacionesTomasInventario = props => {
-  const {currTomaInv, locaciones = [], goBack, handleCurrLocacion} = props;
-  console.log('ListaLocacionesTomasInventario currTomaInv =>', currTomaInv);
-  console.log('ListaLocacionesTomasInventario locaciones =>', locaciones);
+  const {
+    currTomaInv,
+    locaciones = [],
+    goBack,
+    handleCurrLocacion,
+    handleUpdate,
+  } = props;
+  console.log(
+    'ListaLocacionesTomasInventario currTomaInv =>',
+    Object.keys(currTomaInv),
+  );
+  console.log(
+    'ListaLocacionesTomasInventario locaciones =>',
+    locaciones.length,
+  );
 
   //const [listOfLocaciones, setListOfLocaciones] = useState([]);
   const [listOfLocacionesFilter, setListOfLocacionesFilter] = useState([]);
 
-  const init = async => {
+  const init = async(locaciones) => {
+   // setListOfLocacionesFilter([]);
+
     console.log('init Locaciones', locaciones);
     //setListOfLocaciones(locaciones);
     setListOfLocacionesFilter(locaciones);
   };
 
   useEffect(() => {
-    init();
+    init(locaciones);
     //filtrarPorLocacion(filterLocacion);
-  }, []);
+    return ()=>{
+      setListOfLocacionesFilter([]);
+    }
+  }, [locaciones]);
   ////filtrooo
   const [filterLocacion, setFilterLocacion] = useState('');
 
@@ -73,6 +90,11 @@ const ListaLocacionesTomasInventario = props => {
     //console.log('selectLocacion', locacion);
     handleCurrLocacion?.(locacion);
   };
+  ///actualizar locacines en los cards
+  const handleUpdateLocal=()=>{
+   // setListOfLocacionesFilter([]);
+    handleUpdate?.();
+  }
   return (
     <>
       <Header title={'Locaciones'} />
@@ -103,9 +125,11 @@ const ListaLocacionesTomasInventario = props => {
         <ScrollView style={styles.scrollView}>
           {listOfLocacionesFilter.map((locacion, index) => (
             <CardLocacionTomaInventario
+            currTomaInv={currTomaInv}
               key={index}
               locacion={locacion}
               openDetalle={() => selectLocacion(locacion)}
+              handleUpdate={handleUpdateLocal}
             />
           ))}
         </ScrollView>

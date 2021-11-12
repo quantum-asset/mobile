@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TextInput, StyleSheet, Image} from 'react-native';
+import {View} from 'react-native';
 
-import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import HomeViewLogin from './Views/HomeViewLogin';
-import TomasLocacionesView from './Views/TomasLocacionesView';
 import NavigatorSSJ from './NavigationSSJ/NavigatorSSJ';
 
 const Stack = createNativeStackNavigator();
