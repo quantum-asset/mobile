@@ -23,6 +23,9 @@ const TomaInventarioMainView = props => {
   const {handleChangeView, usuario} = props;
   const [listOfTomaInv, setListOfTomaInv] = useState([]);
 
+  const localHandleChangeView=()=>{
+    handleChangeView?.();
+  }
   const init = async () => {
     setListOfTomaInv([]);
     const {success, data, message} = await TomaInventarioController.list(
@@ -74,9 +77,9 @@ const TomaInventarioMainView = props => {
   const [activoDetalleView, setActivoDetalleView] = useState(false);
   const handleCurrActivo = activo => {
     console.log('activo selected', activo);
-    /* setCurrActivo(activo);
+    setCurrActivo(activo);
     setActivosView(false);
-    setActivoDetalleView(true); */
+    setActivoDetalleView(true); /*  */
   };
   ////LOGOUTR
   const handleLogout = () => {
@@ -91,7 +94,7 @@ const TomaInventarioMainView = props => {
     console.log('Se llamo a inner update', innerUpdate);
 
     init();
-   /*  return () => {
+    /*  return () => {
       //setTomasInventario(true);
       setLocacionesView(false);
       setActivosView(false);
@@ -101,6 +104,14 @@ const TomaInventarioMainView = props => {
     }; */
   }, [innerUpdate]);
 
+  // en caso haya hecho el scaneo,
+  // agragado detalles, etc etc y quiero mantener los cambios al entrar y salir del detale
+  const [listaActivosScanned, setlistaActivosScanned] = useState([]);
+  //
+  const handleListaActivosScanned = data => {
+    console.log('call handle', data.length);
+    setlistaActivosScanned(data);
+  };
   return (
     <MainContainer>
       {tomasInventarioView && (
@@ -134,13 +145,17 @@ const TomaInventarioMainView = props => {
           currTomaInv={currTomaInv}
           currLocacion={currLocacion}
           goBack={() => {
-            setLocacionesView(false);
-            setTomasInventarioView(true);
+            setActivosView(false);
+            setLocacionesView(true);
             setCurrLocacion(undefined);
+            setCurrActivo(undefined);
+            handleListaActivosScanned([]);
           }}
           handleCurrActivo={handleCurrActivo}
           usuario={usuario}
           handleUpdate={handleUpdate}
+          listaActivosScanned={listaActivosScanned}
+          handleListaActivosScanned={handleListaActivosScanned}
         />
       )}
       {activoDetalleView && currActivo && (
@@ -157,7 +172,7 @@ const TomaInventarioMainView = props => {
 
       <Footer
         active={0}
-        handleChangeView={handleChangeView}
+        handleChangeView={localHandleChangeView}
         handleLogout={handleLogout}
       />
     </MainContainer>

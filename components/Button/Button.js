@@ -3,18 +3,49 @@ import {Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {mainColor} from '../../globals/palette';
 
 const Button = props => {
-  const {type, onPress, label, children} = props;
+  const {
+    type = 'primary',
+    onPress,
+    label = '',
+    children,
+    size = 35,
+    font,
+    disabled,
+  } = props;
   const handlePress = () => {
     onPress?.();
   };
+  const finalStyleBtn = () => {
+    let styeFinal = {};
+    if (type !== 'primary') {
+      styeFinal = {...styles.btnSec, height: size};
+    } else {
+      styeFinal = {...styles.btn, height: size};
+    }
+    if (disabled) {
+      styeFinal = {...styeFinal, backgroundColor: 'grey'};
+    }
+    return styeFinal;
+  };
+  const finalStyleTxt = () => {
+    let styeFinal = {};
+    if (type !== 'primary') {
+      styeFinal = {...styles.txtSec, fontSize: font};
+    } else {
+      styeFinal = {...styles.textbtn, fontSize: font};
+    }
+    if (disabled) {
+      styeFinal = {...styeFinal, backgroundColor: 'grey'};
+    }
+    return styeFinal;
+  };
   return (
     <TouchableOpacity
-      style={type === 'primary' ? styles.btn : styles.btnSec}
+      disabled={disabled}
+      style={finalStyleBtn()}
       onPress={handlePress}>
       {children}
-      <Text style={type === 'primary' ? styles.textbtn : styles.txtSec}>
-        {label}
-      </Text>
+      <Text style={finalStyleTxt()}>{label}</Text>
     </TouchableOpacity>
   );
 };

@@ -12,89 +12,104 @@ import {
 import {Dimensions} from 'react-native';
 
 import {mainColor} from '../../globals/palette';
+import Button from '../Button/Button';
 
 const screenHeight = Dimensions.get('window').height;
 
 const TableActivos = props => {
-  const {dataActivos = [], openDetalle} = props;
+  const {dataActivos = [], openDetalle, scanStart} = props;
   const handleAgregarDetalle = activo => {
     openDetalle?.(activo);
   };
   return (
     <View style={styles.tableContainer}>
       <View style={styles.rowTable}>
-        <Text style={{...styles.cellData20, color: 'black', fontSize: 15}}>
-          {'Num. tag'}
-        </Text>
+        <CellTable width="20%" alignItems="flex-start">
+          <Text style={styles.txtHeader}>{'Num. tag'}</Text>
+        </CellTable>
 
-        <Text style={{...styles.cellData40, color: 'black', fontSize: 15}}>
-          {'Activo'}
-        </Text>
+        <CellTable width="30%" alignItems="flex-start">
+          <Text style={styles.txtHeader}>{'Activo'}</Text>
+        </CellTable>
+        <CellTable width="30%" alignItems="center">
+          <Text style={styles.txtHeader}>{'Estado'}</Text>
+        </CellTable>
 
-        <Text style={{...styles.cellData20, color: 'black', fontSize: 15}}>
-          {' '}
-          {'Estado'}{' '}
-        </Text>
-
-        <Text style={{...styles.cellData40, color: 'black', fontSize: 15}}>
-          {' '}
-          {'Detalles y observaciones'}
-        </Text>
+        <CellTable width="20%" alignItems="center">
+          <Text style={styles.txtHeader}>{'Detalles y observaciones'}</Text>
+        </CellTable>
       </View>
       {dataActivos.map((activo, index) => (
         <View key={index} style={styles.rowTable}>
-          <View style={styles.cellData20}>
+          <CellTable width="20%" alignItems="flex-start">
             <Text>{activo.CODIGO}</Text>
-           {/*  <Text>hvgb-sdvsdv-sdvsv</Text> */}
-          </View>
-          <View style={styles.cellData40}>
+            {/*  <Text>hvgb-sdvsdv-sdvsv</Text> */}
+          </CellTable>
+          <CellTable width="30%" alignItems="flex-start">
             <Text>
-              {`${activo.DENOMINACION}\n${activo.MARCA}\n${activo.MODELO}`}{' '}
+              {`${activo.DENOMINACION}\n${activo.MARCA}\n${activo.MODELO}`}
             </Text>
-          </View>
-          <View style={styles.cellData20}>
+          </CellTable>
+
+          <CellTable width="30%">
             {activo.ENCONTRADO ? (
               <Text style={styles.encontrado}>Encontrado</Text>
             ) : (
               <Text style={styles.noEncontrado}>No encontrado</Text>
             )}
-          </View>
-          <View
-            style={{
-              ...styles.cellData40,
-              ...{
-                alignItems: 'center',
-              },
-            }}>
-            <TouchableOpacity
+          </CellTable>
+
+          <CellTable width="20%">
+            <Button
+              disabled={scanStart}
               onPress={() => handleAgregarDetalle(activo)}
-              style={styles.btn}>
-              <Text style={styles.textbtn}>Agregar</Text>
-            </TouchableOpacity>
-          </View>
+              label="Agregar"
+            />
+          </CellTable>
         </View>
       ))}
     </View>
   );
 };
 export default TableActivos;
-
+const CellTable = props => {
+  const {data, width = '40%', alignItems = 'center', children} = props;
+  return (
+    <View
+      style={{
+        width: width,
+        alignItems: alignItems,
+        justifyContent: 'center',
+      }}>
+      {children}
+    </View>
+  );
+};
 const styles = StyleSheet.create({
+  txtHeader: {
+    color: 'black',
+    fontSize: 15,
+  },
   textbtn: {
     color: 'white',
     fontSize: 14,
   },
   encontrado: {
     padding: 1,
-    color: 'white',
-    backgroundColor: 'green',
+    color: 'green',
+    backgroundColor: 'white',
+    borderColor: 'green',
+    borderWidth: 1,
     borderRadius: 6,
+    fontSize: 13,
   },
   noEncontrado: {
     padding: 1,
-
-    color: 'white',
-    backgroundColor: 'red',
+    fontSize: 13,
+    borderColor: 'red',
+    borderWidth: 1,
+    color: 'red',
+    backgroundColor: 'white',
     borderRadius: 6,
   },
   tableContainer: {

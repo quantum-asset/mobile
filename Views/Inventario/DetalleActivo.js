@@ -20,41 +20,25 @@ import {mainColor} from '../../globals/palette';
 const screenHeight = Dimensions.get('window').height;
 
 const DetalleActivo = props => {
- const {currActivo, goBack}=props;
- 
+  const {currActivo, goBack} = props;
+
   return (
-    <View>
-      <Title title={'Detalle de activo:'} />
-      <TouchableOpacity
-        style={styles.goBack}
-        onPress={() => {
-          goBack?.();
-        }}>
-        <Icon name="arrow-back" size={20} color={mainColor} />
-        <Text>Regresar</Text>
-      </TouchableOpacity>
-
-      <View style={styles.inputGroup}>
-        <TextInput
-          style={styles.input}
-          placeholder="Buscar por locación"
-          onChangeText={handleChangeLocacion}
-        />
-        <View style={styles.iconContainer}>
-          <Icon name="search" size={30} color="white" />
-        </View>
-      </View>
-
-      <ScrollView style={styles.scrollView}>
-        {locaciones.map((locacion, index) => (
-          <CardTomaInventario
-            key={index}
-            locacion={locacion}
-            openDetalle={() => selectLocacion(locacion)}
-          />
-        ))}
-      </ScrollView>
-    </View>
+    <>
+      <Header title={'Detale de Activo'} />
+      <Body style={styles.body}>
+        <TouchableOpacity
+          style={styles.goBack}
+          onPress={() => {
+            goBack?.();
+          }}>
+          <Icon name="arrow-back" size={20} color={mainColor} />
+          <Text>Regresar</Text>
+        </TouchableOpacity>
+        <ScrollView style={styles.scrollView}>
+          <Text>{`detalle del activo ${currActivo.CODIGO}`}</Text>
+        </ScrollView>
+      </Body>
+    </>
   );
 };
 export default DetalleActivo;
@@ -78,7 +62,7 @@ const styles = StyleSheet.create({
   },
   body: {
     //padding: 7,
-    backgroundColor: 'rgba(255,255,255,1)',
+    backgroundColor: 'rgba(255,255,255,0.91)',
   },
   inputGroup: {
     width: '100%',

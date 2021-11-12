@@ -28,8 +28,8 @@ export class TomaInventarioController {
         let listToReturn = [];
         for (let i = 0; i < listActivos.length; i++) {
           const randomNumber = Math.floor(Math.random() * 10);
-          //si es multiplo de 2 se lo doy
-          if (randomNumber % 2 === 0) {
+          //si es multiplo de 3 se lo doy
+          if (randomNumber % 3 === 0) {
             listToReturn.push(listActivos[i].ID_ACTIVO);
           }
         }
