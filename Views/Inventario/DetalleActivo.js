@@ -26,8 +26,44 @@ const DetalleActivo = props => {
   const {currActivo, goBack, currLocacion} = props;
   console.log('currActivo', Object.keys(currActivo));
   //prevent go back con activos ya escaneados
+  const [observaciones, setObservaciones] = useState(
+    currActivo.OBSERVACIONES_TOMA_INV || '',
+  );
+
   const preventDiscardChanges = () => {
-    goBack?.();
+    if (observaciones.length > 0) {
+      Alert.alert(
+        'Confirmación',
+        'Seguro que desea descartar los cambios y regresar a la lista de locaciones?',
+        [
+          {
+            text: 'Descartar',
+            onPress: () => {
+              
+              goBack?.();
+            },
+            style: 'cancel',
+          },
+          {
+            text: 'Continuar',
+            onPress: () => {},
+          },
+        ],
+      );
+    } else {
+      goBack?.();
+    }
+  };
+  const handleSaveObservacion = async () => {
+    const {success, data, message} =
+      await TomaInventarioController.addObservacionTomaInventario(
+        ID_TOMA_INVENTARIO,
+        observaciones,
+      );
+    console.log('TI data', data);
+    console.log('TI message', message);
+    uppdateObservacionses();
+    handleCloseModal();
   };
   return (
     <>
@@ -45,14 +81,11 @@ const DetalleActivo = props => {
             text={`Código RFID - ${currActivo.CODIGO}`}
           />
 
-         
-
           <View style={styles.detailSeparator}>
             <View style={styles.detailGroupVertical}>
               <ImageContainerActivo />
             </View>
             <View style={styles.detailGroupVertical}>
-             
               <SuperText
                 type="h4"
                 color="black"
@@ -62,7 +95,7 @@ const DetalleActivo = props => {
                 type="h5"
                 text={`${currActivo.MARCA} - ${currActivo.MODELO}`}
               />
-              
+
               <SuperText type="h5" text={'Serie:'} />
               <SuperText type="h5" color="black" text={currActivo.SERIE} />
               <SuperText type="h5" text={'Color:'} />
@@ -90,6 +123,17 @@ const DetalleActivo = props => {
               />
             </ScrollView>
           </View>
+          <Text style={styles.txtModalSub}>Agregar observaciones: </Text>
+          <TextInput
+            style={styles.inputArea}
+            placeholder="Observaciones"
+            onChangeText={txt => setObservaciones(txt)}
+            value={observaciones}
+            multiline={true}
+            underlineColorAndroid="transparent"
+            numberOfLines={4}
+          />
+
           <Text>{`detalle del activo ${currActivo.CODIGO}`}</Text>
         </ScrollView>
       </Body>
@@ -99,6 +143,18 @@ const DetalleActivo = props => {
 export default DetalleActivo;
 
 const styles = StyleSheet.create({
+  inputArea: {
+    marginVertical: 4,
+    borderWidth: 1,
+    minHeight: 15,
+
+    borderColor: 'grey',
+    borderRadius: 4,
+    padding: 8,
+    fontSize: 18,
+    width: '100%',
+    //width: (80 * screenWidth) / 100,
+  },
   detailSeparator: {
     //flexWrap: 'wrap',
     flexDirection: 'row',
