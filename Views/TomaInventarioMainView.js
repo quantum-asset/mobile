@@ -161,6 +161,7 @@ const TomaInventarioMainView = props => {
       {activoDetalleView && currActivo && (
         <DetalleActivo
           currActivo={currActivo}
+          currLocacion={currLocacion}
           goBack={() => {
             setActivosView(true);
             setActivoDetalleView(false);

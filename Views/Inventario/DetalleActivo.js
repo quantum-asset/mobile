@@ -17,24 +17,79 @@ import CardTomaInventario from '../../components/TomaInventario/CardTomaInventar
 import {Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {mainColor} from '../../globals/palette';
+import GoBack from '../../components/GoBack/GoBack';
+import SuperText from '../../components/SuperText/SuperText';
+import ImageContainerActivo from '../../components/ImageContainer/ImageContainerActivo';
 const screenHeight = Dimensions.get('window').height;
 
 const DetalleActivo = props => {
-  const {currActivo, goBack} = props;
-
+  const {currActivo, goBack, currLocacion} = props;
+  console.log('currActivo', Object.keys(currActivo));
+  //prevent go back con activos ya escaneados
+  const preventDiscardChanges = () => {
+    goBack?.();
+  };
   return (
     <>
-      <Header title={'Detale de Activo'} />
+      <Header title={'Detalle de Activo'} />
       <Body style={styles.body}>
-        <TouchableOpacity
-          style={styles.goBack}
-          onPress={() => {
-            goBack?.();
-          }}>
-          <Icon name="arrow-back" size={20} color={mainColor} />
-          <Text>Regresar</Text>
-        </TouchableOpacity>
+        <GoBack
+          onGoBack={preventDiscardChanges}
+          label="Regresar a Lista de activos"
+        />
+
         <ScrollView style={styles.scrollView}>
+          <SuperText
+            type="h5"
+            color="black"
+            text={`Código RFID - ${currActivo.CODIGO}`}
+          />
+
+         
+
+          <View style={styles.detailSeparator}>
+            <View style={styles.detailGroupVertical}>
+              <ImageContainerActivo />
+            </View>
+            <View style={styles.detailGroupVertical}>
+             
+              <SuperText
+                type="h4"
+                color="black"
+                text={currActivo.DENOMINACION}
+              />
+              <SuperText
+                type="h5"
+                text={`${currActivo.MARCA} - ${currActivo.MODELO}`}
+              />
+              
+              <SuperText type="h5" text={'Serie:'} />
+              <SuperText type="h5" color="black" text={currActivo.SERIE} />
+              <SuperText type="h5" text={'Color:'} />
+              <SuperText type="h5" color="black" text={currActivo.COLOR} />
+              <Text type="h4" color="black" text={currActivo.DENOMINACION}>
+                {currActivo.DENOMINACION}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.detailGroupVertical}>
+            <SuperText type="h5" text={'Caracteristicas:'} />
+            <ScrollView style={styles.scrollViewAux}>
+              <SuperText
+                type="h5"
+                color="black"
+                text={currActivo.CARACTERISTICAS}
+              />
+            </ScrollView>
+            <SuperText type="h5" text={'Observaciones del activo:'} />
+            <ScrollView style={styles.scrollViewAux}>
+              <SuperText
+                type="h5"
+                color="black"
+                text={currActivo.OBSERVCIONES}
+              />
+            </ScrollView>
+          </View>
           <Text>{`detalle del activo ${currActivo.CODIGO}`}</Text>
         </ScrollView>
       </Body>
@@ -44,47 +99,44 @@ const DetalleActivo = props => {
 export default DetalleActivo;
 
 const styles = StyleSheet.create({
-  goBack: {
+  detailSeparator: {
+    //flexWrap: 'wrap',
     flexDirection: 'row',
+    paddingHorizontal: 5,
+    with: '100%',
+  },
+  detailGroupVertical: {
+    //flexWrap: 'wrap',
+    flexDirection: 'column',
+    margin: 8,
+    //maxwith: '50%',
+  },
+  imageSummaryContainer: {
+    //flexDirection: 'row',
+    //with: '100%',
     alignItems: 'center',
+    justifyContent: 'flex-start',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  imgContainer: {
+    //with: '40%',
+  },
+  summaryContainer: {
+    //with: '60%',
   },
   scrollView: {
     //backgroundColor: 'pink',
+    backgroundColor: 'rgba(255,255,255,0.8)',
+
     marginHorizontal: 5,
     height: screenHeight - 280,
   },
-
-  text: {
-    fontSize: 42,
-  },
-  list: {
-    height: '100%',
+  scrollViewAux: {
+    maxHeight: (screenHeight / 100) * 12,
   },
   body: {
     //padding: 7,
+    with: '100%',
     backgroundColor: 'rgba(255,255,255,0.91)',
-  },
-  inputGroup: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  input: {
-    borderWidth: 1,
-    height: 40,
-    borderColor: 'grey',
-    borderRadius: 4,
-    padding: 8,
-    fontSize: 18,
-    width: '84%',
-  },
-  iconContainer: {
-    alignItems: 'center',
-    padding: '1%',
-    height: '100%',
-    with: '20%',
-    backgroundColor: '#86180e',
   },
 });

@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: '1%',
     height: '100%',
-    with: '20%',
+    //with: '20%',
     backgroundColor: mainColor,
   },
 });
